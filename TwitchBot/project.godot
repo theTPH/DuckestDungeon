@@ -131,6 +131,10 @@ _global_script_class_icons={
 config/name="Twitch Bot"
 config/icon="res://icon.png"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "godot-twicil" )
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
