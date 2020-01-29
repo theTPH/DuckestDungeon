@@ -11,6 +11,7 @@ public class HelloWorld : RichTextLabel
     public override void _Ready()
     {
         GD.Print("Hello World!!");
+        this.Text = "Hello World";
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
