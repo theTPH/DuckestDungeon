@@ -57,4 +57,12 @@
     <Compile Include="scripts\HelloWorld.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <!-- Nuget packages (https://www.nuget.org/) are used. -->
+    <!-- Note that the references have to be in this multiline format (due to a Godot error). -->
+    <!-- "dotnet restore" has to be executed after changes. -->
+    <PackageReference Include="NHibernate">
+      <Version>5.2.7</Version>
+    </PackageReference>
+  </ItemGroup>
 </Project>

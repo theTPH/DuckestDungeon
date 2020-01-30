@@ -19,6 +19,16 @@ config/name="DuckestDungeon"
 run/main_scene="res://scenes/RichTextLabel.tscn"
 config/icon="res://icon.png"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "mono_debugger" )
+
+[mono]
+
+debugger_agent/port=23619
+debugger_agent/wait_for_debugger=true
+debugger_agent/wait_timeout=20000
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
