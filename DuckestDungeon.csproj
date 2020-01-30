@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <RuntimeIdentifiers>win7-x64;win10-x64;win;osx.10.11-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Tools</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B3A9478C-090F-4399-9805-336A625F8B54}</ProjectGuid>
@@ -43,12 +47,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GodotSharp">
-      <HintPath>$(ProjectDir)\.mono\assemblies\$(ApiConfiguration)\GodotSharp.dll</HintPath>
       <Private>False</Private>
+      <HintPath>$(ProjectDir)/.mono/assemblies/$(ApiConfiguration)/GodotSharp.dll</HintPath>
     </Reference>
     <Reference Include="GodotSharpEditor" Condition=" '$(Configuration)' == 'Tools' ">
-      <HintPath>$(ProjectDir)\.mono\assemblies\$(ApiConfiguration)\GodotSharpEditor.dll</HintPath>
       <Private>False</Private>
+      <HintPath>$(ProjectDir)/.mono/assemblies/$(ApiConfiguration)/GodotSharpEditor.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -57,6 +61,7 @@
     <Compile Include="scripts\HelloWorld.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  
   <ItemGroup>
     <!-- Nuget packages (https://www.nuget.org/) are used. -->
     <!-- Note that the references have to be in this multiline format (due to a Godot error). -->
@@ -64,5 +69,16 @@
     <PackageReference Include="NHibernate">
       <Version>5.2.7</Version>
     </PackageReference>
+    <PackageReference Include="System.Data.SQLite">
+      <Version>1.0.112</Version>
+    </PackageReference>
+    <PackageReference Include="log4net">
+      <Version>2.0.8</Version>
+    </PackageReference>
   </ItemGroup>
+
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <!-- Stuff to copy -->
+    <Copy SourceFiles="hibernate.cfg.xml" DestinationFolder="$(OutDir)" />
+  </Target>
 </Project>
