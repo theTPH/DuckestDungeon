@@ -8,7 +8,5 @@ export_presets.cfg
 .mono/
 data_*/
 
-# config-files
-#default_env.tres
-#DuckestDungeon.csproj
-#DuckestDungeon.sln
+logs/
+nhibernate.db

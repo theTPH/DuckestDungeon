@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="DuckestDungeon" namespace="TestProgram">
+    <class name="Price">
+        <id name="Id">
+            <generator class="native" />
+        </id>
+        <property name="min" />
+        <property name="max" />
+        <property name="average" />
+    </class>
+  
+</hibernate-mapping>
+
