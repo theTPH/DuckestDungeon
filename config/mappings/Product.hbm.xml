@@ -7,7 +7,11 @@
         <property name="Name" />
         <property name="Category" />
         <property name="Discontinued" />
-        <!--property name="Price" type="TestProgram.Price" /-->
+        <many-to-one name="Price" class="Price" />
+        <bag name="Stores" table="Product_Store" >
+            <key column="ProductID" />
+            <many-to-many class="TestProgram.Store" column="StoreID" />
+        </bag>
     </class>
   
 </hibernate-mapping>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="DuckestDungeon" namespace="TestProgram">
+    <class name="Store">
+        <id name="Id">
+            <generator class="native" />
+        </id>
+        <property name="Name" />
+        <bag name="Products" table="Product_Store" inverse="true">
+            <key column="StoreID" />
+            <many-to-many class="TestProgram.Product" column="ProductID" />
+        </bag>
+    </class>
+</hibernate-mapping>
+
