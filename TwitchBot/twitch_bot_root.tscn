@@ -2,6 +2,7 @@
 
 [ext_resource path="res://addons/godot-twicil/godot_twicil.gd" type="Script" id=1]
 [ext_resource path="res://ressources/fonts/Exo-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://ressources/fonts/button_font.tres" type="DynamicFont" id=3]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control 
@@ -26,9 +27,18 @@ func _on_button_connect_pressed():
 				channel_name = line[1]
 	config.close()
 	#_setup_twicil(username, password, client_id, channel_name)
+
+func _on_button_create_config_pressed():
+	print(\"hi\")
+	var config = File.new()
+	var username = \"\"
+	var password = \"\"
+	var client_id = \"\"
+	var channel_name = \"\"
 	
-	
-	print(username, password, client_id, channel_name)
+	get_tree().change_scene(\"res://ressources/scenes/create_configuration.tscn\")
+	config.open(\"res://config/config.csv\", config.READ_WRITE)
+
 
 func _setup_twicil(username, password, client_id, channel_name):
 # sets up the Twicil Chat Interaction Layer and defines chat commands
@@ -46,6 +56,7 @@ func _setup_twicil(username, password, client_id, channel_name):
 	
 	# Add aliases here:
 	twicil.commands.add_aliases(\"current coins\", [\"currentcoins\",\"my coins\", \"mycoins\"])
+
 	
 func _command_current_coins(params):
 # shows the current amount of coins owned by a user
@@ -56,16 +67,11 @@ func _command_current_coins(params):
 	# check db how many coins the user has
 	
 	twicil.send_whisper(user, str(\"Hey whats up \", user, \". You have \", coins , \" coins\"))
-	
-	
+
 "
 
 [sub_resource type="DynamicFont" id=2]
 size = 42
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=3]
-size = 20
 font_data = ExtResource( 2 )
 
 [node name="twitch_bot_root" type="Node"]
@@ -97,13 +103,25 @@ __meta__ = {
 [node name="button_connect" type="Button" parent="main menu"]
 anchor_right = 1.0
 anchor_bottom = 60.0
-margin_left = 310.743
-margin_top = 113.278
-margin_right = 673.743
-margin_bottom = -2205.72
-custom_fonts/font = SubResource( 3 )
+margin_left = 312.291
+margin_top = 114.052
+margin_right = 675.291
+margin_bottom = -2204.95
+custom_fonts/font = ExtResource( 3 )
 text = "Connect"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="button_create_config" type="Button" parent="main menu"]
+margin_left = 315.774
+margin_top = 235.226
+margin_right = 713.774
+margin_bottom = 321.226
+custom_fonts/font = ExtResource( 3 )
+text = "Create Configuration"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="main menu/button_connect" to="main menu" method="_on_button_connect_pressed"]
+[connection signal="pressed" from="main menu/button_create_config" to="main menu" method="_on_button_create_config_pressed"]

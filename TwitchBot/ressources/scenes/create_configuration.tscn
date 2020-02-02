@@ -1,0 +1,22 @@
+[gd_scene format=2]
+
+[node name="Create Configuration" type="Node2D"]
+
+[node name="username" type="Label" parent="."]
+margin_left = 193.445
+margin_top = 113.745
+margin_right = 257.445
+margin_bottom = 127.745
+text = "username"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 279.334
+margin_top = 110.65
+margin_right = 337.334
+margin_bottom = 134.65
+__meta__ = {
+"_edit_use_anchors_": false
+}
