@@ -4,16 +4,15 @@
 [ext_resource path="res://ressources/fonts/Exo-Regular.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="GDScript" id=1]
-script/source = "extends Control
-
-var username = \"\"
-var password = \"\"
-var client_id = \"\"
-var channel_name = \"\" 
+script/source = "extends Control 
 
 func _on_button_connect_pressed():
-	print(\"hi\")
 	var config = File.new()
+	var username = \"\"
+	var password = \"\"
+	var client_id = \"\"
+	var channel_name = \"\"
+
 	config.open(\"res://config/config.csv\", config.READ)
 	while ! config.eof_reached():
 			var line = config.get_csv_line()
@@ -26,7 +25,39 @@ func _on_button_connect_pressed():
 			elif line[0] == \"channel_name\":
 				channel_name = line[1]
 	config.close()
+	#_setup_twicil(username, password, client_id, channel_name)
+	
+	
 	print(username, password, client_id, channel_name)
+
+func _setup_twicil(username, password, client_id, channel_name):
+# sets up the Twicil Chat Interaction Layer and defines chat commands
+#param username: string, username of account the app will be authorized in chat
+#param password: string, oauth code obtained from Twitch Developer Dashboard
+#param client_id: string, client_id obtained from Twitch Developer Dashboard
+#param channel_name: string, twitch.tv channel to connect to
+#return: 
+	var twicil = get_node(\"TwiCIL\")
+	twicil.connect_to_twitch_chat()
+	twicil.connect_to_channel(channel_name, client_id, password, username)
+	
+	# Add Custom commands here:
+	twicil.commands.add(\"current coins\", self, \"_command_current_coins\", 0)
+	
+	# Add aliases here:
+	twicil.commands.add_aliases(\"current coins\", [\"currentcoins\",\"my coins\", \"mycoins\"])
+	
+func _command_current_coins(params):
+# shows the current amount of coins owned by a user
+#param:
+	var twicil = get_node(\"TwiCIL\")
+	var user = params[0]
+	var coins = 0
+	# check db how many coins the user has
+	
+	twicil.send_whisper(user, str(\"Hey whats up \", user, \". You have \", coins , \" coins\"))
+	
+	
 "
 
 [sub_resource type="DynamicFont" id=2]
@@ -47,6 +78,9 @@ script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TwiCIL" type="Node" parent="main menu"]
+script = ExtResource( 1 )
 
 [node name="headline" type="Label" parent="main menu"]
 margin_left = 1.54756
@@ -72,7 +106,4 @@ text = "Connect"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="TwiCIL" type="Node" parent="."]
-script = ExtResource( 1 )
 [connection signal="pressed" from="main menu/button_connect" to="main menu" method="_on_button_connect_pressed"]
