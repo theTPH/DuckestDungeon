@@ -3,36 +3,57 @@
 [ext_resource path="res://addons/godot-twicil/godot_twicil.gd" type="Script" id=1]
 [ext_resource path="res://ressources/fonts/Exo-Regular.ttf" type="DynamicFontData" id=2]
 
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=1]
 script/source = "extends Control
+
+var username = \"\"
+var password = \"\"
+var client_id = \"\"
+var channel_name = \"\" 
 
 func _on_button_connect_pressed():
 	print(\"hi\")
+	var config = File.new()
+	config.open(\"res://config/config.csv\", config.READ)
+	while ! config.eof_reached():
+			var line = config.get_csv_line()
+			if line[0] == \"username\":
+				username = line[1]
+			elif line[0] == \"password\":
+				password = line[1]
+			elif line[0] == \"client_id\":
+				client_id = line[1]
+			elif line[0] == \"channel_name\":
+				channel_name = line[1]
+	config.close()
+	print(username, password, client_id, channel_name)
 "
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=2]
 size = 42
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=3]
 size = 20
 font_data = ExtResource( 2 )
 
 [node name="twitch_bot_root" type="Node"]
 
 [node name="main menu" type="Control" parent="."]
-margin_right = 40.0
+anchor_right = 0.02
+margin_right = 19.52
 margin_bottom = 40.0
-script = SubResource( 3 )
+script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="headline" type="Label" parent="main menu"]
+margin_left = 1.54756
 margin_top = 20.0
-margin_right = 1024.0
+margin_right = 1025.55
 margin_bottom = 77.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Twitch Bot"
 align = 1
 __meta__ = {
@@ -46,7 +67,7 @@ margin_left = 310.743
 margin_top = 113.278
 margin_right = 673.743
 margin_bottom = -2205.72
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 text = "Connect"
 __meta__ = {
 "_edit_use_anchors_": false
