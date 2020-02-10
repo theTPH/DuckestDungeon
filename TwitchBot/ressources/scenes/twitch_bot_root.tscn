@@ -49,9 +49,9 @@ __meta__ = {
 }
 
 [node name="button_create_config" type="Button" parent="main menu"]
-margin_left = 315.774
+margin_left = 316.548
 margin_top = 235.226
-margin_right = 713.774
+margin_right = 714.548
 margin_bottom = 321.226
 custom_fonts/font = ExtResource( 1 )
 text = "Create / Change Configuration"

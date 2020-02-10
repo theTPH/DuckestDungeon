@@ -2,39 +2,40 @@ extends Control
 
 func _on_button_connect_pressed():
 	var config = File.new()
-	var username = ""
-	var password = ""
+	var bot_nik = ""
+	var oauth_token = ""
 	var client_id = ""
 	var channel_name = ""
 	
 	config.open("res://config/config.csv", config.READ)
 	while ! config.eof_reached():
 			var line = config.get_csv_line()
-			if line[0] == "username":
-				username = line[1]
-			elif line[0] == "password":
-				password = line[1]
+			if line[0] == "bot_nik":
+				bot_nik = line[1]
+			elif line[0] == "oauth_token":
+				oauth_token = line[1]
 			elif line[0] == "client_id":
 				client_id = line[1]
 			elif line[0] == "channel_name":
 				channel_name = line[1]
 	config.close()
-	#_setup_twicil(username, password, client_id, channel_name)
+	_setup_twicil(bot_nik, oauth_token, client_id, channel_name)
 
 func _on_button_create_config_pressed():
 	get_tree().change_scene("res://ressources/scenes/create_configuration.tscn")
 
 
-func _setup_twicil(username, password, client_id, channel_name):
+func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 # sets up the Twicil Chat Interaction Layer and defines chat commands
-#param username: string, username of account the app will be authorized in chat
-#param password: string, oauth code obtained from Twitch Developer Dashboard
+#param bot_nik: string, bots nikname in chat
+#param oauth_token: string, oauth code obtained from Twitch Developer Dashboard
 #param client_id: string, client_id obtained from Twitch Developer Dashboard
 #param channel_name: string, twitch.tv channel to connect to
 #return: 
 	var twicil = get_node("TwiCIL")
 	twicil.connect_to_twitch_chat()
-	twicil.connect_to_channel(channel_name, client_id, password, username)
+	twicil.connect_to_channel(channel_name, client_id, oauth_token, bot_nik)
+	twicil.send_message("Hi im online")
 	
 	# Add Custom commands here:
 	twicil.commands.add("current coins", self, "_command_current_coins", 0)
