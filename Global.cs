@@ -2,6 +2,8 @@ using Godot;
 using System;
 using Mono.Data.Sqlite;
 
+// once at program start necessary
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "config/log4net.config")]
 
 public class Global : Node
 {
@@ -52,7 +54,7 @@ public class Global : Node
 
         // load possible save data
         LoadGame();
-        GD.Print(PlayerAttributes.Name, PlayerAttributes.Level, PlayerAttributes.Xp);
+        Log.log.Info(PlayerAttributes.Name + " " + PlayerAttributes.Level + " " + PlayerAttributes.Xp);
     }
 
     #region Scene Handling
@@ -123,7 +125,7 @@ public class Global : Node
         
         // parse json to player dictionary
         var playerData = (Godot.Collections.Dictionary)JSON.Parse(saveGame.GetLine()).Result;
-        GD.Print(playerData);
+        Log.log.Debug(playerData);
         saveGame.Close();
 
         // TODO -> check if error
@@ -150,7 +152,7 @@ public class Global : Node
             // create commands
             command = new SqliteCommand(queryString, connection);
             string version = command.ExecuteScalar().ToString();
-            GD.Print($"SQLite version: {version}"); 
+            Log.log.Debug($"SQLite version: {version}"); 
 
             // update viewerscore db
             //...
@@ -159,7 +161,7 @@ public class Global : Node
         catch(SqliteException ex)
         {
             // report errors
-            GD.Print("Error: {0}", ex.ToString());
+            Log.log.Error("Exception on SQLite init", ex);
         }
         finally
         {
@@ -176,8 +178,7 @@ public class Global : Node
                 }
                 catch(SqliteException ex)
                 {
-                    GD.Print("Cannot close connection.");
-                    GD.Print("Error: {0}", ex.ToString());
+                    Log.log.Error("Cannot close SQLite connection", ex);
                 }
                 finally
                 {

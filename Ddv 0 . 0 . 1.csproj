@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <!-- Nuget -->
+    <RuntimeIdentifiers>win;osx;ubuntu</RuntimeIdentifiers>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Tools</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{42CC2A04-F017-49D1-A98D-DB723A824555}</ProjectGuid>
@@ -8,7 +12,7 @@
     <OutputPath>.mono\temp\bin\$(Configuration)</OutputPath>
     <RootNamespace>Ddv0.Empty.Empty</RootNamespace>
     <AssemblyName>Ddv 0 . 0 . 1</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <GodotProjectGeneratorVersion>1.0.7333.3918</GodotProjectGeneratorVersion>
     <BaseIntermediateOutputPath>.mono\temp\obj</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Configuration)</IntermediateOutputPath>
@@ -68,8 +72,20 @@
     <Compile Include="gui\scoreboard\ScoreLine.cs" />
     <Compile Include="gui\title_menu\ExitButton.cs" />
     <Compile Include="gui\title_menu\TitleMenu.cs" />
+    <Compile Include="logging\GodotAppender.cs" />
+    <Compile Include="logging\Log.cs" />
     <Compile Include="PlayerAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <!-- Nuget packages (https://www.nuget.org/) are used. -->
+    <!-- Note that the references have to be in this multiline format (due to a Godot error). -->
+    <!-- "dotnet restore" has to be executed after changes. -->
+    <PackageReference Include="log4net">
+      <Version>2.0.8</Version>
+    </PackageReference>
+  </ItemGroup>
+
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
