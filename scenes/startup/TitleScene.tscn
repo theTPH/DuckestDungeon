@@ -1,0 +1,13 @@
+[gd_scene format=2]
+
+[node name="TitleScene" type="Node2D"]
+
+[node name="TitelTestButton" type="Button" parent="."]
+margin_left = 127.011
+margin_top = 285.093
+margin_right = 414.011
+margin_bottom = 780.093
+text = "STARTING_SCENE"
+__meta__ = {
+"_edit_use_anchors_": false
+}

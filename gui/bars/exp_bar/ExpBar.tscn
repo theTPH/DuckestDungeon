@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://gui/bars/ProgressBar.tscn" type="PackedScene" id=1]
+[ext_resource path="res://gui/bars/exp_bar/ExpBar.cs" type="Script" id=2]
+
+[node name="ExpBar" instance=ExtResource( 1 )]
+script = ExtResource( 2 )

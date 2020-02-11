@@ -1,0 +1,119 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://gui/title_menu/logo.png" type="Texture" id=1]
+[ext_resource path="res://gui/title_menu/TitleMenu.cs" type="Script" id=2]
+[ext_resource path="res://gui/title_menu/ExitButton.cs" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.203922, 0.121569, 0.262745, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_offset = Vector2( 0, 5 )
+
+[node name="TitleMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.67017
+margin_bottom = 1.67017
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -400.0
+margin_top = 100.0
+margin_right = 400.0
+margin_bottom = 128.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+margin_right = 800.0
+margin_bottom = 128.0
+texture = ExtResource( 1 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -280.0
+margin_right = 250.0
+margin_bottom = 271.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="CenterContainer"]
+margin_top = 25.0
+margin_right = 500.0
+margin_bottom = 525.0
+rect_min_size = Vector2( 500, 500 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = -203.5
+margin_right = 200.0
+margin_bottom = 203.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer"]
+margin_right = 400.0
+margin_bottom = 407.0
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ContinueButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+margin_right = 400.0
+margin_bottom = 86.0
+size_flags_vertical = 3
+disabled = true
+text = "Spiel fortsetzen"
+
+[node name="NewButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+margin_top = 106.0
+margin_right = 400.0
+margin_bottom = 192.0
+size_flags_vertical = 3
+text = "Neues Spiel"
+
+[node name="OptionsButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+margin_top = 212.0
+margin_right = 400.0
+margin_bottom = 298.0
+size_flags_vertical = 3
+toggle_mode = true
+text = "Optionen"
+
+[node name="ExitButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+margin_top = 318.0
+margin_right = 400.0
+margin_bottom = 407.0
+size_flags_vertical = 3
+text = "Beenden"
+script = ExtResource( 3 )
+[connection signal="pressed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/ContinueButton" to="." method="OnContinueButtonPressed"]
+[connection signal="pressed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/NewButton" to="." method="OnNewButtonPressed"]
+[connection signal="pressed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/OptionsButton" to="." method="OnTwitchOptionButtonToggled"]
+[connection signal="pressed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/ExitButton" to="." method="OnExitButtonPressed"]

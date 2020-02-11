@@ -1,0 +1,18 @@
+[gd_scene format=2]
+
+[node name="AttributesPanel" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1470.0
+margin_bottom = -907.0
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 21.0
+margin_top = 16.0
+margin_right = -20.0
+margin_bottom = -17.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
