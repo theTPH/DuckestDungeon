@@ -1,6 +1,11 @@
 using Godot;
 using System;
-using Mono.Data.Sqlite;
+
+using System.Collections.Generic;
+
+using NHibernate;
+using NHibernate.Cfg;
+using NHibernate.Tool.hbm2ddl;
 
 // once at program start necessary
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "config/log4net.config")]
@@ -21,8 +26,7 @@ public class Global : Node
 
     // database
     private string myDatabaseConnection;
-    public static SqliteConnection connection;
-    public static SqliteCommand command;
+    public static ISession connection;
     public static string queryString;
     
     // Called when the node enters the scene tree for the first time.
@@ -32,7 +36,7 @@ public class Global : Node
         TwitchMode = false;
 
         // initialize database
-        InitDatabaseConnection();
+        InitHibernate();
 
         // get gui and world node
         Viewport root = GetTree().Root;
@@ -137,55 +141,32 @@ public class Global : Node
 
     #region Database
 
-    public void InitDatabaseConnection()
+    private static void InitHibernate()
     {
         try
         {
-           // set and open database connection
-            myDatabaseConnection = "URI=file:viewerscore.db";
-            connection = new SqliteConnection(myDatabaseConnection);
-            connection.Open();
+            Log.log.Info("Loading Hibernate Config");
+            // read hibernate.cfg.xml, initializing hibernate
+            var cfg = new Configuration();
+            cfg.Configure("config/hibernate.cfg.xml");
 
-            // get the SQLite version by query string
-            queryString = "SELECT SQLITE_VERSION()";
-
-            // create commands
-            command = new SqliteCommand(queryString, connection);
-            string version = command.ExecuteScalar().ToString();
-            Log.log.Debug($"SQLite version: {version}"); 
-
-            // update viewerscore db
-            //...
-
+            IEnumerable<string> Files = System.IO.Directory
+                .EnumerateFiles("config/mappings", "*.hbm.xml", System.IO.SearchOption.TopDirectoryOnly);
+            
+            foreach(string File in Files)
+                cfg.AddFile(File);
+                
+            // Create or update tables in DB
+            new SchemaUpdate(cfg).Execute(false, true);
+            
+            // Get ourselves an NHibernate Session
+            var sessions = cfg.BuildSessionFactory();
+            connection = sessions.OpenSession();
         }
-        catch(SqliteException ex)
+        catch (Exception e)
         {
-            // report errors
-            Log.log.Error("Exception on SQLite init", ex);
+            Log.log.Error("Error on create hibernate session", e);
         }
-        finally
-        {
-            if(command != null)
-            {
-                command.Dispose();
-            }
-
-            if(connection != null)
-            {
-                try
-                {
-                    connection.Close();
-                }
-                catch(SqliteException ex)
-                {
-                    Log.log.Error("Cannot close SQLite connection", ex);
-                }
-                finally
-                {
-                    connection.Dispose();
-                }
-            }
-        }      
 
     }
 

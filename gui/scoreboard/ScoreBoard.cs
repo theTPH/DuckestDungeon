@@ -1,8 +1,6 @@
 using Godot;
 using System;
-using System.Data;
-using Mono.Data.Sqlite;
-
+using System.Collections.Generic;
 public class ScoreBoard : VBoxContainer
 {
     
@@ -12,7 +10,6 @@ public class ScoreBoard : VBoxContainer
     public override void _Ready()
     {
         Global = GetNode<Global>("/root/Global");
-        GD.Print();
         if(Global.TwitchMode)
         {
             UpdateViewerScoreBoard();
@@ -23,60 +20,49 @@ public class ScoreBoard : VBoxContainer
 
     public void UpdateViewerScoreBoard()
     {
+        IList<ScoreLineWrapper> scores = null;
+
+        // the objects are somehow cached, wich leads to some weird behaviour (especially with regard to sorting)
+        Global.connection.Clear();
+
+        using (Global.connection.BeginTransaction())
+        {
+            ScoreLineWrapper w = null;
+            scores = Global.connection.QueryOver<ScoreLineWrapper>(() => w).Where(() => w.Points > 0).OrderBy(() => w.Points).Desc.Take(10).List();
+        }
+        
         var scoreLines = GetTree().GetNodesInGroup("ScoreLines");
 
         foreach(var sl in scoreLines)
         {
             this.RemoveChild((Node)sl); 
-            GD.Print(sl.ToString());
-        }  
+            Log.log.Debug($"removing {sl.ToString()} from ScoreBoard");
+        }
 
-        // open db connection
-        Global.connection.Open();
-
-        // select top ten scorer from
-        string queryString = $"SELECT * FROM IngameDonations ORDER BY points DESC LIMIT 10";
-        SqliteCommand command = new SqliteCommand(queryString, Global.connection);
-        SqliteDataAdapter dataAdapter = new SqliteDataAdapter(command);
-
-        // create new local data table
-        DataTable dataTable = new DataTable();
-
-        // put the data table into the adapter
-        dataAdapter.Fill(dataTable);
-
-        // fill the actual scoreboard with data
-        PackedScene scoreLineScene = (PackedScene)ResourceLoader.Load("res://gui/scoreboard/ScoreLine.tscn");
         int rank = 1;
-
-        foreach (DataRow dr in dataTable.Rows)
+        if (scores != null)
         {
-			ScoreLine sl = (ScoreLine)scoreLineScene.Instance();
-            sl.Init();
-            sl.SetScoreLine(rank.ToString(), dr["username"].ToString(), dr["points"].ToString());
-            this.AddChild(sl);
-            rank++;
+            foreach (ScoreLineWrapper sl in scores)
+            {
+                sl.Ranking = rank;
+                this.AddChild(sl.ScoreLine);
+                rank++;
+            }
         }
 
         // fill empty ranks up to 10
         while(rank <= 10)
         {
-            ScoreLine sl = (ScoreLine)scoreLineScene.Instance();
-            sl.Init();
-            sl.SetScoreLine(rank.ToString(), string.Empty, string.Empty);
-            this.AddChild(sl);
+            ScoreLineWrapper sl = new ScoreLineWrapper();
+            sl.SetScoreLine(rank, string.Empty, 0);
+            this.AddChild(sl.ScoreLine);
             rank++;
         }
-
-        // close db connection
-        Global.connection.Close();
-
     }
-
 
     public void OnUpdateTimerTimeOut()
     {
-        GD.Print("Update Scoreboard!");
+        Log.log.Debug("Update Scoreboard!");
         UpdateViewerScoreBoard();
     }
 
