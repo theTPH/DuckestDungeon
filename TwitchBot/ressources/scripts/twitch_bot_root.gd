@@ -22,9 +22,14 @@ func _on_button_connect_pressed():
 	config.close()
 	_setup_twicil(bot_nik, oauth_token, client_id, channel_name)
 
+func _on_button_disconnect_pressed():
+	var twicil = get_node("TwiCIL")
+	pass
+	#twicil.disconnect()
+
+
 func _on_button_create_config_pressed():
 	get_tree().change_scene("res://ressources/scenes/create_configuration.tscn")
-
 
 func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 # sets up the Twicil Chat Interaction Layer and defines chat commands
@@ -55,4 +60,7 @@ func _command_current_coins(params):
 	# check db how many coins the user has
 	
 	twicil.send_whisper(user, str("Hey whats up ", user, ". You have ", coins , " coins"))
+
+
+
 
