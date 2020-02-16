@@ -1,5 +1,6 @@
 extends Control 
 
+
 func _on_button_connect_pressed():
 	var config = File.new()
 	var bot_nik = ""
@@ -33,6 +34,7 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 #param channel_name: string, twitch.tv channel to connect to
 #return: 
 	var twicil = get_node("TwiCIL")
+	twicil.set_logging(true)
 	twicil.connect_to_twitch_chat()
 	twicil.connect_to_channel(channel_name, client_id, oauth_token, bot_nik)
 	twicil.send_message("Hi im online")

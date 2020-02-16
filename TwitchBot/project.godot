@@ -132,6 +132,10 @@ config/name="Twitch Bot"
 run/main_scene="res://ressources/scenes/twitch_bot_root.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+mdules="*res://ressources/scripts/mdules.gd"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "godot-twicil" )
