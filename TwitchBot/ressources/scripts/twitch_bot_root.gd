@@ -4,6 +4,15 @@ const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
 const db_path = "res://test.db"
 const table_name = "user_coins"
 
+onready var twicil = get_node("TwiCIL")
+onready var db = SQLite.new()
+
+func _ready():
+	#gets called when scene is loaded
+	db.path=db_path
+	db.verbose_mode = true
+	
+
 func _on_button_connect_pressed():
 	var config = File.new()
 	var bot_nik = ""
@@ -28,7 +37,6 @@ func _on_button_connect_pressed():
 	
 
 func _on_button_disconnect_pressed():
-	var twicil = get_node("TwiCIL")
 	pass
 	# no disconnect implementation
 	#twicil.disconnect()
@@ -37,7 +45,6 @@ func _on_button_create_config_pressed():
 	get_tree().change_scene("res://ressources/scenes/create_configuration.tscn")
 
 func _setup_coin_db():
-	var db = SQLite.new()
 	var db_name = "res://test"
 	
 	#table structure
@@ -46,8 +53,6 @@ func _setup_coin_db():
 	table_dict["username"] = {"data_type":"char(100)", "not_null":true}
 	table_dict["coins"] = {"data_type":"int", "not_null":true}
 	
-	db.path = db_name
-	db.verbose_mode = true
 	db.open_db() # opens db found in db_name
 	db.drop_table(table_name)
 	db.create_table(table_name, table_dict)
@@ -61,10 +66,10 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 #param client_id: string, client_id obtained from Twitch Developer Dashboard
 #param channel_name: string, twitch.tv channel to connect to
 #return: 
-	var twicil = get_node("TwiCIL")
 	twicil.set_logging(true)
 	twicil.connect_to_twitch_chat()
 	twicil.connect_to_channel(channel_name, client_id, oauth_token, bot_nik)
+	_connect_signals()
 	twicil.send_message("Hi im online")
 	
 	# Add Custom commands here:
@@ -72,25 +77,44 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 	
 	# Add aliases here:
 	twicil.commands.add_aliases("current coins", ["currentcoins","my coins", "mycoins"])
+
+func _connect_signals():
+	twicil.connect("user_appeared", self, "_on_user_appeared")
+
+func _on_user_appeared(user):
+	var select_condition = ""
+	var username
+	var row_array : Array = []
+	var row_dict : Dictionary = Dictionary()
 	
+	db.open_db()
+	select_condition = "username ='" + user + "'"
+	username = db.select_rows(table_name, select_condition, ["username"])
+
+	if username == []:
+		twicil.send_message("Hey a new face :D Welcome " + user)
+		row_dict["username"] = user
+		row_dict["coins"] = 10
+		row_array.append(row_dict)
+		db.insert_rows(table_name, row_array)
+	else:
+		twicil.send_message(str("Hey Welcome back @", user, " :D"))
+	
+	db.close_db()
+		
+
 func _command_current_coins(params):
 # shows the current amount of coins owned by a user
 #param:
-	var twicil = get_node("TwiCIL")
-	var db = SQLite.new()
 	var user = params[0]
 	var coins
 	var select_condition
 	
-	db.path = db_path
 	db.open_db()	
 	select_condition = "username ='" + user + "'"
 	coins = db.select_rows(table_name, select_condition, ["coins"])
 	db.close_db()
 	#db.query("SELECT coins FROM user_coins WHERE username=" + user)
-	# check db how many coins the user has
-	twicil.send_message(coins[0])
+	coins = str(coins[0]).substr(7,str(coins).length()-10) #cuts out coin number only
 	twicil.send_whisper(user, str("Hey whats up ", user, ". You have ", coins , " coins"))
-
-
 
