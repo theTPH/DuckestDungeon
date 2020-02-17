@@ -1,18 +1,59 @@
-[gd_scene format=2]
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://gui/player_attributes/STRAttributeContainer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://gui/player_attributes/HPAttributeContainer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://gui/player_attributes/AGAttributeContainer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://gui/player_attributes/APBoxContainer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://gui/player_attributes/AttributesPanel.cs" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.101961, 0.105882, 0.2, 1 )
 
 [node name="AttributesPanel" type="Panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = -1470.0
-margin_bottom = -907.0
-
-[node name="CenterContainer" type="CenterContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 21.0
-margin_top = 16.0
-margin_right = -20.0
-margin_bottom = -17.0
+margin_right = 426.0
+margin_bottom = 107.0
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -199.0
+margin_top = -45.0
+margin_right = 199.0
+margin_bottom = 45.0
+custom_constants/separation = 12
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="STRAttributeContainer" parent="HBoxContainer" instance=ExtResource( 1 )]
+size_flags_horizontal = 1
+size_flags_vertical = 0
+
+[node name="HPAttributeContainer" parent="HBoxContainer" instance=ExtResource( 2 )]
+margin_left = 102.0
+margin_right = 192.0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+
+[node name="AGAttributeContainer" parent="HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 204.0
+margin_right = 294.0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+margin_left = 306.0
+margin_right = 396.0
+margin_bottom = 90.0
+
+[node name="APBoxContainer" parent="HBoxContainer/CenterContainer" instance=ExtResource( 4 )]
+margin_left = 0.0
+size_flags_horizontal = 3
+size_flags_vertical = 0

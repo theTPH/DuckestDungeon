@@ -68,6 +68,12 @@
     <Compile Include="gui\menu_bar\ExpContainer.cs" />
     <Compile Include="gui\menu_bar\MenuBar.cs" />
     <Compile Include="gui\menu_bar\MenuButton.cs" />
+    <Compile Include="gui\player_attributes\AGAttributeContainer.cs" />
+    <Compile Include="gui\player_attributes\APBoxContainer.cs" />
+    <Compile Include="gui\player_attributes\AttributesPanel.cs" />
+    <Compile Include="gui\player_attributes\HPAttributeContainer.cs" />
+    <Compile Include="gui\player_attributes\SingleAttributeContainer.cs" />
+    <Compile Include="gui\player_attributes\STRAttributeContainer.cs" />
     <Compile Include="gui\scoreboard\ScoreBoard.cs" />
     <Compile Include="gui\scoreboard\ScoreLine.cs" />
     <Compile Include="gui\title_menu\ExitButton.cs" />
@@ -77,7 +83,6 @@
     <Compile Include="PlayerAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <!-- Nuget packages (https://www.nuget.org/) are used. -->
     <!-- Note that the references have to be in this multiline format (due to a Godot error). -->
@@ -85,7 +90,6 @@
     <PackageReference Include="log4net">
       <Version>2.0.8</Version>
     </PackageReference>
-
     <PackageReference Include="NHibernate">
       <Version>5.2.7</Version>
     </PackageReference>
@@ -97,6 +101,5 @@
       <Version>4.0.0.0</Version>
     </Reference>
   </ItemGroup>
-
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -18,10 +18,8 @@ corner_radius_bottom_left = 20
 shadow_offset = Vector2( 0, 5 )
 
 [node name="TitleMenu" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 1.67017
-margin_bottom = 1.67017
+margin_right = 1920.0
+margin_bottom = 1080.0
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false

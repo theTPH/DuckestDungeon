@@ -25,9 +25,7 @@ public class Global : Node
     public bool TwitchMode;
 
     // database
-    private string myDatabaseConnection;
     public static ISession connection;
-    public static string queryString;
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
