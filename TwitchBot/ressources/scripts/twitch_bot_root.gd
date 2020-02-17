@@ -73,10 +73,12 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 	twicil.send_message("Hi im online")
 	
 	# Add Custom commands here:
-	twicil.commands.add("current coins", self, "_command_current_coins", 0)
+	twicil.commands.add("!current coins", self, "_command_current_coins", 0)
+	twicil.commands.add("!show commands", self, "_command_show_commands", 0)
 	
 	# Add aliases here:
-	twicil.commands.add_aliases("current coins", ["currentcoins","my coins", "mycoins"])
+	twicil.commands.add_aliases("!current coins", ["!currentcoins","!my coins", "!mycoins"])
+	twicil.commands.add_aliases("!show commands", ["!showcommands","!commands","!help"])
 
 func _connect_signals():
 	twicil.connect("user_appeared", self, "_on_user_appeared")
@@ -118,3 +120,8 @@ func _command_current_coins(params):
 	coins = str(coins[0]).substr(7,str(coins).length()-10) #cuts out coin number only
 	twicil.send_whisper(user, str("Hey whats up ", user, ". You have ", coins , " coins"))
 
+func _command_show_commands(params):
+	var user = params[0]
+	twicil.send_message(str("You can use the following commands:\n",
+						"!mycoins -> shows your current coin balance.\n"))
+	pass
