@@ -7,12 +7,12 @@ const table_name = "user_coins"
 onready var twicil = get_node("TwiCIL")
 onready var db = SQLite.new()
 
+# Godot / element functions
 func _ready():
 	#gets called when scene is loaded
 	db.path=db_path
 	db.verbose_mode = true
 	
-
 func _on_button_connect_pressed():
 	var config = File.new()
 	var bot_nik = ""
@@ -35,7 +35,6 @@ func _on_button_connect_pressed():
 	#_setup_coin_db()
 	_setup_twicil(bot_nik, oauth_token, client_id, channel_name)
 	
-
 func _on_button_disconnect_pressed():
 	pass
 	# no disconnect implementation
@@ -43,6 +42,7 @@ func _on_button_disconnect_pressed():
 
 func _on_button_create_config_pressed():
 	get_tree().change_scene("res://ressources/scenes/create_configuration.tscn")
+
 
 func _setup_coin_db():
 	var db_name = "res://test"
@@ -59,6 +59,8 @@ func _setup_coin_db():
 	#db.query("CREATE TABLE IF NOT EXISTS " + table_name) #create table
 	db.close_db()
 	
+	
+#TwiCIL functions
 func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 # sets up the Twicil Chat Interaction Layer and defines chat commands
 #param bot_nik: string, bots nikname in chat
@@ -70,7 +72,6 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 	twicil.connect_to_twitch_chat()
 	twicil.connect_to_channel(channel_name, client_id, oauth_token, bot_nik)
 	_connect_signals()
-	twicil.send_message("Hi im online")
 	
 	# Add Custom commands here:
 	twicil.commands.add("!current coins", self, "_command_current_coins", 0)
@@ -79,10 +80,14 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 	# Add aliases here:
 	twicil.commands.add_aliases("!current coins", ["!currentcoins","!my coins", "!mycoins"])
 	twicil.commands.add_aliases("!show commands", ["!showcommands","!commands","!help"])
-
+	
+	twicil.send_message("Hi im online")
+	
 func _connect_signals():
 	twicil.connect("user_appeared", self, "_on_user_appeared")
 
+
+#Bot functions
 func _on_user_appeared(user):
 	var select_condition = ""
 	var username
@@ -103,8 +108,12 @@ func _on_user_appeared(user):
 		twicil.send_message(str("Hey Welcome back @", user, " :D"))
 	
 	db.close_db()
-		
 
+func _earn_coins_viewing_time():
+	
+	pass
+
+#Bot command functions
 func _command_current_coins(params):
 # shows the current amount of coins owned by a user
 #param:
@@ -122,6 +131,6 @@ func _command_current_coins(params):
 
 func _command_show_commands(params):
 	var user = params[0]
-	twicil.send_message(str("You can use the following commands:\n",
+	twicil.send_whisper(user, str("You can use the following commands:\n",
 						"!mycoins -> shows your current coin balance.\n"))
 	pass
