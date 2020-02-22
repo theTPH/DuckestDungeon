@@ -6,12 +6,18 @@ const table_name = "user_coins"
 
 onready var twicil = get_node("TwiCIL")
 onready var db = SQLite.new()
+onready var userlist : Array = []
+onready var user_dict : Dictionary = Dictionary()
 
 # Godot / element functions
 func _ready():
 	#gets called when scene is loaded
 	db.path=db_path
 	db.verbose_mode = true
+	user_dict["username"] = "init"
+	var time = OS.get_time()
+	user_dict["timestamp"] = str(time.hour,":", time.minute)
+	userlist.append(user_dict)
 	
 func _on_button_connect_pressed():
 	var config = File.new()
@@ -85,7 +91,7 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 	
 func _connect_signals():
 	twicil.connect("user_appeared", self, "_on_user_appeared")
-
+	twicil.connect("user_disappeared", self, "_on_user_disappeared")
 
 #Bot functions
 func _on_user_appeared(user):
@@ -94,6 +100,7 @@ func _on_user_appeared(user):
 	var row_array : Array = []
 	var row_dict : Dictionary = Dictionary()
 	
+	#add user to the database if not allready existing
 	db.open_db()
 	select_condition = "username ='" + user + "'"
 	username = db.select_rows(table_name, select_condition, ["username"])
@@ -106,9 +113,27 @@ func _on_user_appeared(user):
 		db.insert_rows(table_name, row_array)
 	else:
 		twicil.send_message(str("Hey Welcome back @", user, " :D"))
-	
 	db.close_db()
+	
+	var i = 0
+	for i in range(userlist.size()):
+		if userlist[i]["username"] == user:
+			pass
+		else:
+			user_dict["username"] = user
+			var time = OS.get_time()
+			user_dict["timestamp"] = str(time.hour,":", time.minute)
+			userlist.append(user_dict)
+		i += 1
+	print(userlist)
 
+func _on_user_disappeared(user):
+	var i = 0
+	for i in range(userlist.size()):
+		if userlist[i]["username"] == user:
+			userlist.erase(i)
+	print(userlist)
+		
 func _earn_coins_viewing_time():
 	
 	pass
@@ -126,7 +151,8 @@ func _command_current_coins(params):
 	coins = db.select_rows(table_name, select_condition, ["coins"])
 	db.close_db()
 	#db.query("SELECT coins FROM user_coins WHERE username=" + user)
-	coins = str(coins[0]).substr(7,str(coins).length()-10) #cuts out coin number only
+	coins = coins[0]["coins"]
+	#coins = str(coins[0]).substr(7,str(coins).length()-10) #cuts out coin number only
 	twicil.send_whisper(user, str("Hey whats up ", user, ". You have ", coins , " coins"))
 
 func _command_show_commands(params):

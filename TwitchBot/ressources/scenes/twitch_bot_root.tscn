@@ -35,19 +35,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="button_connect" type="Button" parent="main menu"]
-anchor_right = 1.0
-anchor_bottom = 60.0
-margin_left = 311.751
-margin_top = 114.592
-margin_right = 674.751
-margin_bottom = -2204.41
-custom_fonts/font = ExtResource( 1 )
-text = "Connect"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="button_create_config" type="Button" parent="main menu"]
 margin_left = 312.766
 margin_top = 334.652
@@ -69,6 +56,19 @@ text = "Disconnect"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="main menu/button_connect" to="main menu" method="_on_button_connect_pressed"]
+
+[node name="button_connect" type="Button" parent="main menu"]
+anchor_right = 1.0
+anchor_bottom = 60.0
+margin_left = 311.751
+margin_top = 114.592
+margin_right = 674.751
+margin_bottom = -2204.41
+custom_fonts/font = ExtResource( 1 )
+text = "Connect"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="main menu/button_create_config" to="main menu" method="_on_button_create_config_pressed"]
 [connection signal="pressed" from="main menu/button_disconnect" to="main menu" method="_on_button_disconnect_pressed"]
+[connection signal="pressed" from="main menu/button_connect" to="main menu" method="_on_button_connect_pressed"]
