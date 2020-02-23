@@ -7,13 +7,13 @@ const table_name = "user_coins"
 onready var twicil = get_node("TwiCIL")
 onready var db = SQLite.new()
 onready var userlist : Array = []
-onready var user_dict : Dictionary = Dictionary()
 
 # Godot / element functions
 func _ready():
 	#gets called when scene is loaded
 	db.path=db_path
 	db.verbose_mode = true
+	var user_dict : Dictionary = Dictionary()
 	user_dict["username"] = "init"
 	var time = OS.get_time()
 	user_dict["timestamp"] = str(time.hour,":", time.minute)
@@ -115,24 +115,24 @@ func _on_user_appeared(user):
 		twicil.send_message(str("Hey Welcome back @", user, " :D"))
 	db.close_db()
 	
-	var i = 0
-	for i in range(userlist.size()):
+	var user_exists = false;
+	for i in range(userlist.size()):	
 		if userlist[i]["username"] == user:
-			pass
-		else:
-			user_dict["username"] = user
-			var time = OS.get_time()
-			user_dict["timestamp"] = str(time.hour,":", time.minute)
-			userlist.append(user_dict)
-		i += 1
-	print(userlist)
+			user_exists = true
+	if user_exists == false:
+		var user_dict : Dictionary = Dictionary()
+		user_dict["username"] = user
+		var time = OS.get_time()
+		user_dict["timestamp"] = str(time.hour,":", time.minute)
+		userlist.append(user_dict)
 
 func _on_user_disappeared(user):
-	var i = 0
 	for i in range(userlist.size()):
 		if userlist[i]["username"] == user:
-			userlist.erase(i)
+			print("found")
+			userlist.remove(i)
 	print(userlist)
+	
 		
 func _earn_coins_viewing_time():
 	
