@@ -7,6 +7,7 @@ const table_name = "user_coins"
 onready var twicil = get_node("TwiCIL")
 onready var db = SQLite.new()
 onready var userlist : Array = []
+onready var timer = null
 
 # Godot / element functions
 func _ready():
@@ -15,9 +16,17 @@ func _ready():
 	db.verbose_mode = true
 	var user_dict : Dictionary = Dictionary()
 	user_dict["username"] = "init"
-	var time = OS.get_time()
-	user_dict["timestamp"] = str(time.hour,":", time.minute)
+	var time = OS.get_ticks_msec()
+	user_dict["timestamp"] = time
 	userlist.append(user_dict)
+	
+	#time for the coin giving method that has to be called every X seconds
+	timer = Timer.new()
+	add_child(timer)
+	timer.connect("timeout", self, "_earn_coins_viewing_time")
+	timer.set_wait_time(5.0)
+	timer.set_one_shot(false) # Make sure it loops
+	timer.start()
 	
 func _on_button_connect_pressed():
 	var config = File.new()
@@ -122,8 +131,8 @@ func _on_user_appeared(user):
 	if user_exists == false:
 		var user_dict : Dictionary = Dictionary()
 		user_dict["username"] = user
-		var time = OS.get_time()
-		user_dict["timestamp"] = str(time.hour,":", time.minute)
+		var time = OS.get_ticks_msec()
+		user_dict["timestamp"] = time
 		userlist.append(user_dict)
 
 func _on_user_disappeared(user):
@@ -131,12 +140,28 @@ func _on_user_disappeared(user):
 		if userlist[i]["username"] == user:
 			print("found")
 			userlist.remove(i)
-	print(userlist)
-	
 		
 func _earn_coins_viewing_time():
+	var time_elapsed = 0
+	var coins = 0
+	var condition = ""
+	var username = ""
 	
-	pass
+	
+	for i in range(userlist.size()):
+		time_elapsed = OS.get_ticks_msec() - userlist[i]["timestamp"]
+		if time_elapsed > 10000: #in milliseconds
+			userlist[i]["timestamp"] = OS.get_ticks_msec()
+			condition = str("username = '", userlist[i]["username"], "'")
+			username = userlist[i]["username"]
+			
+			db.open_db()
+			coins = db.select_rows(table_name, condition, ["coins"])
+			if coins != []:
+				coins = coins[0]["coins"] + 10
+				db.update_rows(table_name, condition, {"username":username, "coins":coins})
+				twicil.send_message("coins earned")
+			#db.query()
 
 #Bot command functions
 func _command_current_coins(params):
