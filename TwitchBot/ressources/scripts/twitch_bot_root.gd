@@ -1,5 +1,6 @@
 extends Control 
 
+#variables for configuration and tweaking
 const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
 const db_path = "res://test.db"
 const table_name = "user_coins"
@@ -8,6 +9,8 @@ onready var twicil = get_node("TwiCIL")
 onready var db = SQLite.new()
 onready var userlist : Array = []
 onready var timer = null
+onready var earnable_coins = 10 # defines the amount of coins a user can earn every tick
+onready var tick_time = 10000 # defines the time every tick takes in milisecons
 
 # Godot / element functions
 func _ready():
@@ -150,7 +153,7 @@ func _earn_coins_viewing_time():
 	
 	for i in range(userlist.size()):
 		time_elapsed = OS.get_ticks_msec() - userlist[i]["timestamp"]
-		if time_elapsed > 10000: #in milliseconds
+		if time_elapsed > tick_time: #in milliseconds
 			userlist[i]["timestamp"] = OS.get_ticks_msec()
 			condition = str("username = '", userlist[i]["username"], "'")
 			username = userlist[i]["username"]
@@ -158,9 +161,9 @@ func _earn_coins_viewing_time():
 			db.open_db()
 			coins = db.select_rows(table_name, condition, ["coins"])
 			if coins != []:
-				coins = coins[0]["coins"] + 10
+				coins = coins[0]["coins"] + earnable_coins
 				db.update_rows(table_name, condition, {"username":username, "coins":coins})
-				twicil.send_message("coins earned")
+				twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
 			#db.query()
 
 #Bot command functions
