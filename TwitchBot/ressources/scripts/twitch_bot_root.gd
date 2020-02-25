@@ -206,7 +206,7 @@ func _command_send_xp(params):
 	var object  = message
 	var coins
 	
-	coins = db_connect.get_coins()
+	coins = db_connect.get_coins(params[0])
 	#db.open_db()
 	#select_condition = "username ='" + params[0] + "'"
 	#coins = db.select_rows(table_name, select_condition, ["coins"])
