@@ -31,6 +31,7 @@ func _ready():
 	timer.set_one_shot(false) # Make sure it loops
 	timer.start()
 	
+	
 func _on_button_connect_pressed():
 	var config = File.new()
 	var bot_nik = ""
