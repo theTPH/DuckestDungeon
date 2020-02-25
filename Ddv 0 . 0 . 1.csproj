@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Global.cs" />
     <Compile Include="botapi/WebSocketImpl.cs" />
+    <Compile Include="botapi/Message.cs" />
     <Compile Include="GUI.cs" />
     <Compile Include="gui\bars\exp_bar\ExpBar.cs" />
     <Compile Include="gui\bars\ProgressBar.cs" />
