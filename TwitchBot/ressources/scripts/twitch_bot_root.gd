@@ -22,15 +22,15 @@ func _on_button_connect_pressed():
 	
 	config.open("res://config/config.csv", config.READ)
 	while ! config.eof_reached():
-			var line = config.get_csv_line()
-			if line[0] == "bot_nik":
-				bot_nik = line[1]
-			elif line[0] == "oauth_token":
-				oauth_token = line[1]
-			elif line[0] == "client_id":
-				client_id = line[1]
-			elif line[0] == "channel_name":
-				channel_name = line[1]
+		var line = config.get_csv_line()
+		if line[0] == "bot_nik":
+			bot_nik = line[1]
+		elif line[0] == "oauth_token":
+			oauth_token = line[1]
+		elif line[0] == "client_id":
+			client_id = line[1]
+		elif line[0] == "channel_name":
+			channel_name = line[1]
 	config.close()
 	#_setup_coin_db()
 	_setup_twicil(bot_nik, oauth_token, client_id, channel_name)
