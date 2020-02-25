@@ -193,9 +193,18 @@ func _command_show_commands(params):
 	pass
 
 func _command_send_xp(params):
+	var select_condition = ""
 	var object  = message
+	var coins
+	
+	
+	#db.open_db()
+	#select_condition = "username ='" + params[0] + "'"
+	#coins = db.select_rows(table_name, select_condition, ["coins"])
+	#db.close_db()
+	
 	object.user = params[0]
 	object.coins_used = params[1]
 	object.xp = int(object.coins_used) * 2
-	#websocket.send(object)
+	#websocket.send(object) #activate when Marcel fixed stuff
 	twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))
