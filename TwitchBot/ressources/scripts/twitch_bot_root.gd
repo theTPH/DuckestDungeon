@@ -95,10 +95,12 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 	# Add Custom commands here:
 	twicil.commands.add("!current coins", self, "_command_current_coins", 0)
 	twicil.commands.add("!show commands", self, "_command_show_commands", 0)
+	twicil.commands.add("!send xp", self, "_command_send_xp", 1)
 	
 	# Add aliases here:
 	twicil.commands.add_aliases("!current coins", ["!currentcoins","!my coins", "!mycoins"])
 	twicil.commands.add_aliases("!show commands", ["!showcommands","!commands","!help"])
+	twicil.commands.add_aliases("!send xp", ["!sendxp", "!givexp"])
 	
 	twicil.send_message("Hi im online")
 	
@@ -189,3 +191,11 @@ func _command_show_commands(params):
 	twicil.send_whisper(user, str("You can use the following commands:\n",
 						"!mycoins -> shows your current coin balance.\n"))
 	pass
+
+func _command_send_xp(params):
+	var object  = message
+	object.user = params[0]
+	object.coins_used = params[1]
+	object.xp = int(object.coins_used) * 2
+	#websocket.send(object)
+	twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))

@@ -4,4 +4,3 @@ extends Node
 var user;
 var xp;
 var coins_used;
-
