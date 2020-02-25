@@ -22,6 +22,7 @@ func _ready():
 	var time = OS.get_ticks_msec()
 	user_dict["timestamp"] = time
 	userlist.append(user_dict)
+	var ws = websocket
 	
 	#time for the coin giving method that has to be called every X seconds
 	timer = Timer.new()
@@ -206,5 +207,5 @@ func _command_send_xp(params):
 	object.user = params[0]
 	object.coins_used = params[1]
 	object.xp = int(object.coins_used) * 2
-	#websocket.send(object) #activate when Marcel fixed stuff
+	websocket.send(object) #activate when Marcel fixed stuff
 	twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))

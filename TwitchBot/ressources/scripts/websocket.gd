@@ -64,5 +64,9 @@ func send(message):
 	_send(_id, message)
 
 func _send(id, message):
+	if !_server.get_peer(id):
+		print("Fehler beim senden der Nachricht. ID: %d" %[id])
+		return false
 	# the object is converted to json
 	_server.get_peer(id).put_packet(to_json(message).to_utf8())
+	return true
