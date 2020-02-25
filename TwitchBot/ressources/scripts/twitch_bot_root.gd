@@ -24,12 +24,18 @@ func _ready():
 	userlist.append(user_dict)
 	
 	#time for the coin giving method that has to be called every X seconds
+	
+	# at the moment starts as sonn as programm gets startet should be called after the connect button is pressed
 	timer = Timer.new()
 	add_child(timer)
 	timer.connect("timeout", self, "_earn_coins_viewing_time")
 	timer.set_wait_time(5.0)
 	timer.set_one_shot(false) # Make sure it loops
 	timer.start()
+	
+	#for trubbleshooting only
+	var datab = database_connection
+	datab.get_coins("thetph")
 	
 	
 func _on_button_connect_pressed():
@@ -206,5 +212,5 @@ func _command_send_xp(params):
 	object.user = params[0]
 	object.coins_used = params[1]
 	object.xp = int(object.coins_used) * 2
-	#websocket.send(object) #activate when Marcel fixed stuff
+	websocket.send(object) #activate when Marcel fixed stuff
 	twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))
