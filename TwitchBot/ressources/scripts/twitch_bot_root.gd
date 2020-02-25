@@ -11,6 +11,7 @@ onready var userlist : Array = []
 onready var timer = null
 onready var earnable_coins = 10 # defines the amount of coins a user can earn every tick
 onready var tick_time = 10000 # defines the time every tick takes in milisecons
+onready var db_connect = database_connection
 
 # Godot / element functions
 func _ready():
@@ -204,7 +205,7 @@ func _command_send_xp(params):
 	var object  = message
 	var coins
 	
-	
+	coins = db_connect.get_coins()
 	#db.open_db()
 	#select_condition = "username ='" + params[0] + "'"
 	#coins = db.select_rows(table_name, select_condition, ["coins"])
@@ -214,4 +215,5 @@ func _command_send_xp(params):
 	object.coins_used = params[1]
 	object.xp = int(object.coins_used) * 2
 	websocket.send(object) #activate when Marcel fixed stuff
+	
 	twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))
