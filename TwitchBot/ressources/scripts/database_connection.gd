@@ -24,4 +24,20 @@ func get_coins(user):
 	db_array = db.select_rows(table_name, select_condition, ["coins"])
 	db.close_db()
 	user_coins = db_array[0]["coins"]
+	print(user_coins) #debug only
 	return user_coins
+	
+func remove_coins(user, amount):
+	var current_coins = 0
+	var new_coins = 0
+	var update_condition = ""
+	
+	current_coins = get_coins(user)
+	update_condition = "username ='" + user + "'"
+	new_coins = current_coins - amount
+	
+	db.open_db()
+	db.update_rows(table_name, update_condition, {"username":user, "coins":new_coins})
+	db.close_db()
+	print(get_coins(user)) #debug only
+	

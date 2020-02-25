@@ -36,6 +36,7 @@ func _ready():
 	#for trubbleshooting only
 	var datab = database_connection
 	datab.get_coins("thetph")
+	datab.remove_coins("thetph", 10)
 	
 	
 func _on_button_connect_pressed():
