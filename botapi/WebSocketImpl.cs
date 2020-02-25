@@ -1,22 +1,31 @@
 using System;
 using WebSocketSharp;
+using Newtonsoft.Json;
 
-public class WebSocketImpl
+public class WebSocketImpl : WebSocket
 {
-
-	public WebSocketImpl(string adress = "ws://localhost:9080")
+	private static WebSocketImpl instance = null;
+	public static WebSocketImpl getInstance()
 	{
-		WebSocket ws = new WebSocket (adress);
-		ws.OnMessage += (sender, e) =>
-			Log.log.Info("message: " + e.Data);
-		ws.OnClose += (sender, e) =>
-			Log.log.Info("WS-Verbindung zu Server geschlossen");
+		if (instance == null)
+			instance = new WebSocketImpl();
+		return instance;
+	}
+	public WebSocketImpl(string adress = "ws://localhost:9080") : base(adress)
+	{
+		this.OnMessage += (sender, e) =>
+			logging.Logger.logger.Info("message: " + e.Data);
+		this.OnClose += (sender, e) =>
+			logging.Logger.logger.Info("WS-Verbindung zu Server geschlossen");
 
-		ws.Connect ();
-		ws.Send ("BALUS");
-
-		System.Threading.Thread.Sleep(500);
-		ws.Close();
+		this.Connect ();
+		this.Send ("BALUS");
 	}
 
+	void send(Message m)
+	{
+		//var json = new JavaScriptSerializer().Serialize(m);
+		var json = JsonConvert.SerializeObject(m);
+		this.Send(json);
+	}
 }

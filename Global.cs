@@ -35,6 +35,7 @@ public class Global : Node
 
         // initialize database
         InitHibernate();
+        WebSocketImpl wsi = WebSocketImpl.getInstance();
 
         // get gui and world node
         Viewport root = GetTree().Root;
