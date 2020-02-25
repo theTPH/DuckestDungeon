@@ -1,17 +1,35 @@
 extends Control 
 
+#variables for configuration and tweaking
 const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
 const db_path = "res://test.db"
 const table_name = "user_coins"
 
 onready var twicil = get_node("TwiCIL")
 onready var db = SQLite.new()
+onready var userlist : Array = []
+onready var timer = null
+onready var earnable_coins = 10 # defines the amount of coins a user can earn every tick
+onready var tick_time = 10000 # defines the time every tick takes in milisecons
 
 # Godot / element functions
 func _ready():
 	#gets called when scene is loaded
 	db.path=db_path
 	db.verbose_mode = true
+	var user_dict : Dictionary = Dictionary()
+	user_dict["username"] = "init"
+	var time = OS.get_ticks_msec()
+	user_dict["timestamp"] = time
+	userlist.append(user_dict)
+	
+	#time for the coin giving method that has to be called every X seconds
+	timer = Timer.new()
+	add_child(timer)
+	timer.connect("timeout", self, "_earn_coins_viewing_time")
+	timer.set_wait_time(5.0)
+	timer.set_one_shot(false) # Make sure it loops
+	timer.start()
 	
 func _on_button_connect_pressed():
 	var config = File.new()
@@ -85,7 +103,7 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 	
 func _connect_signals():
 	twicil.connect("user_appeared", self, "_on_user_appeared")
-
+	twicil.connect("user_disappeared", self, "_on_user_disappeared")
 
 #Bot functions
 func _on_user_appeared(user):
@@ -94,6 +112,7 @@ func _on_user_appeared(user):
 	var row_array : Array = []
 	var row_dict : Dictionary = Dictionary()
 	
+	#add user to the database if not allready existing
 	db.open_db()
 	select_condition = "username ='" + user + "'"
 	username = db.select_rows(table_name, select_condition, ["username"])
@@ -106,12 +125,46 @@ func _on_user_appeared(user):
 		db.insert_rows(table_name, row_array)
 	else:
 		twicil.send_message(str("Hey Welcome back @", user, " :D"))
-	
 	db.close_db()
-
-func _earn_coins_viewing_time():
 	
-	pass
+	var user_exists = false;
+	for i in range(userlist.size()):	
+		if userlist[i]["username"] == user:
+			user_exists = true
+	if user_exists == false:
+		var user_dict : Dictionary = Dictionary()
+		user_dict["username"] = user
+		var time = OS.get_ticks_msec()
+		user_dict["timestamp"] = time
+		userlist.append(user_dict)
+
+func _on_user_disappeared(user):
+	for i in range(userlist.size()):
+		if userlist[i]["username"] == user:
+			print("found")
+			userlist.remove(i)
+		
+func _earn_coins_viewing_time():
+	var time_elapsed = 0
+	var coins = 0
+	var condition = ""
+	var username = ""
+	
+	
+	for i in range(userlist.size()):
+		time_elapsed = OS.get_ticks_msec() - userlist[i]["timestamp"]
+		if time_elapsed > tick_time: #in milliseconds
+			userlist[i]["timestamp"] = OS.get_ticks_msec()
+			condition = str("username = '", userlist[i]["username"], "'")
+			username = userlist[i]["username"]
+			
+			db.open_db()
+			coins = db.select_rows(table_name, condition, ["coins"])
+			if coins != []:
+				coins = coins[0]["coins"] + earnable_coins
+				db.update_rows(table_name, condition, {"username":username, "coins":coins})
+				twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
+			#db.query()
 
 #Bot command functions
 func _command_current_coins(params):
@@ -126,7 +179,8 @@ func _command_current_coins(params):
 	coins = db.select_rows(table_name, select_condition, ["coins"])
 	db.close_db()
 	#db.query("SELECT coins FROM user_coins WHERE username=" + user)
-	coins = str(coins[0]).substr(7,str(coins).length()-10) #cuts out coin number only
+	coins = coins[0]["coins"]
+	#coins = str(coins[0]).substr(7,str(coins).length()-10) #cuts out coin number only
 	twicil.send_whisper(user, str("Hey whats up ", user, ". You have ", coins , " coins"))
 
 func _command_show_commands(params):
