@@ -5,6 +5,8 @@ const PORT = 9080
 # Our WebSocketServer instance
 var _server = WebSocketServer.new()
 
+var _id = 0;
+
 func _ready():
 	# Connect base signals to get notified of new client connections,
 	# disconnections, and disconnect requests.
@@ -23,6 +25,13 @@ func _ready():
 		set_process(false)
 
 func _connected(id, proto):
+	if _id == 0:
+		_id = id;
+	else:
+		# TODO
+		#_close_request(id, )
+		return
+
 	# This is called when a new peer connects, "id" will be the assigned peer id,
 	# "proto" will be the selected WebSocket sub-protocol (which is optional)
 	print("Client %d connected with protocol: %s" % [id, proto])
@@ -50,6 +59,9 @@ func _process(delta):
 	# Call this in _process or _physics_process.
 	# Data transfer, and signals emission will only happen when calling this function.
 	_server.poll()
+
+func send(message):
+	_send(_id, message)
 
 func _send(id, message):
 	# the object is converted to json
