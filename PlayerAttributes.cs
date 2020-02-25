@@ -30,6 +30,7 @@ public class PlayerAttributes
 
     public Godot.Collections.Dictionary<string, object> Save()
     {
+        GD.Print(Ap, Str, Hp, Ag);
         return new Godot.Collections.Dictionary<string, object>
         {
             {"name", Name},

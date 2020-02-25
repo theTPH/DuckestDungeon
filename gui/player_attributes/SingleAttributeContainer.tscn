@@ -20,6 +20,7 @@ AName = "AName"
 [node name="PlusButton" type="Button" parent="."]
 margin_right = 90.0
 margin_bottom = 20.0
+disabled = true
 text = "+"
 
 [node name="SingleAttributePanel" type="Panel" parent="."]
@@ -64,6 +65,7 @@ valign = 1
 margin_top = 70.0
 margin_right = 90.0
 margin_bottom = 90.0
+disabled = true
 text = "-"
 [connection signal="pressed" from="PlusButton" to="." method="OnPlusButtonClick"]
 [connection signal="pressed" from="MinusButton" to="." method="OnMinusButtonClick"]

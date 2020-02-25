@@ -20,6 +20,10 @@ public class AttributesPanel : Panel
         AAg = GetNode<AGAttributeContainer>("HBoxContainer/AGAttributeContainer");
         APBox = GetNode<APBoxContainer>("HBoxContainer/CenterContainer/APBoxContainer");
 
+        if (Global.SaveGameLoaded)
+        {
+            LoadAttributeData();
+        }
     }
 
     public void LoadAttributeData()
@@ -29,5 +33,40 @@ public class AttributesPanel : Panel
         AAg.SetPointsLabel(Global.PlayerAttributes.Ag);
         APBox.SetAttributePoints(Global.PlayerAttributes.Ap);
     }
+    
+    #region Signals
+    public void OnAPEditCancelled()
+    {
+        LoadAttributeData();
+    }
 
+    public void OnAPEditConfirmed()
+    {
+        // set new player data, if edit confirmed
+        Global.PlayerAttributes.Str = AStr.GetPoints();
+        Global.PlayerAttributes.Hp = AHp.GetPoints();
+        Global.PlayerAttributes.Ag = AAg.GetPoints();
+        Global.PlayerAttributes.Ap = APBox.GetAttributePoints();
+
+        Global.SaveGame();
+    }
+
+    public void OnAPEditToggled()
+    {
+        AStr.ToggleEditButtons();
+        AHp.ToggleEditButtons();
+        AAg.ToggleEditButtons();
+    }
+
+    public void OnPointsIncreased()
+    {
+        
+    }
+
+    public void OnPointsDecreased()
+    {
+
+    }
+
+    #endregion
 }

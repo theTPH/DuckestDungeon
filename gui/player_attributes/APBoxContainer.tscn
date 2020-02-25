@@ -49,6 +49,7 @@ margin_right = 90.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+disabled = true
 text = "+"
 
 [node name="CancelPointsButton" type="Button" parent="HBoxContainer"]
@@ -59,3 +60,5 @@ margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "X"
+[connection signal="pressed" from="HBoxContainer/SetPointsButton" to="." method="OnSetPointsButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/CancelPointsButton" to="." method="OnCancelButtonPressed"]
