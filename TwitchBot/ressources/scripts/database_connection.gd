@@ -40,7 +40,6 @@ func add_db_user(user):
 	db.close_db()
 	return user_exists
 	
-	
 func get_coins(user):
 	var select_condition = ""
 	var user_coins = 0
@@ -53,6 +52,17 @@ func get_coins(user):
 	user_coins = int(db_array[0]["coins"])
 	return user_coins
 	
+func add_coins(user, select_condition, earned_coins):
+	var current_coins = 0
+	var new_coins = 0
+	
+	db.open_db()
+	current_coins = db.select_rows(table_name, select_condition, ["coins"])
+	if current_coins != []:
+		new_coins = current_coins[0]["coins"] + earned_coins
+		db.update_rows(table_name, select_condition, {"username":user, "coins":new_coins})
+	db.close_db()
+
 func remove_coins(user, amount):
 	var current_coins = 0
 	var new_coins = 0
@@ -65,5 +75,3 @@ func remove_coins(user, amount):
 	db.open_db()
 	db.update_rows(table_name, update_condition, {"username":user, "coins":new_coins})
 	db.close_db()
-	print(get_coins(user)) #debug only
-	

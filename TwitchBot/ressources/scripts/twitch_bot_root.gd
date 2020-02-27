@@ -2,11 +2,8 @@ extends Control
 
 #variables for configuration and tweaking
 const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
-const db_path = "res://test.db"
-const table_name = "user_coins"
 
 onready var twicil = get_node("TwiCIL")
-onready var db = SQLite.new()
 onready var userlist : Array = []
 onready var timer = null
 onready var earnable_coins = 10 # defines the amount of coins a user can earn every tick
@@ -16,8 +13,6 @@ onready var db_connect = database_connection
 # Godot / element functions
 func _ready():
 	#gets called when scene is loaded
-	db.path=db_path
-	db.verbose_mode = true
 	var user_dict : Dictionary = Dictionary()
 	user_dict["username"] = "init"
 	var time = OS.get_ticks_msec()
@@ -122,8 +117,8 @@ func _on_user_disappeared(user):
 		
 func _earn_coins_viewing_time():
 	var time_elapsed = 0
-	var coins = 0
 	var condition = ""
+	var coins = 0
 	var username = ""
 	
 	
@@ -134,13 +129,8 @@ func _earn_coins_viewing_time():
 			condition = str("username = '", userlist[i]["username"], "'")
 			username = userlist[i]["username"]
 			
-			db.open_db()
-			coins = db.select_rows(table_name, condition, ["coins"])
-			if coins != []:
-				coins = coins[0]["coins"] + earnable_coins
-				db.update_rows(table_name, condition, {"username":username, "coins":coins})
-				twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
-			#db.query()
+			db_connect.add_coins(username, condition, earnable_coins)
+			twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
 
 #Bot command functions
 func _command_current_coins(params):
