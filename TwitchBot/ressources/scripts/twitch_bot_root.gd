@@ -62,24 +62,7 @@ func _on_button_disconnect_pressed():
 	#twicil.disconnect()
 
 func _on_button_create_config_pressed():
-	get_tree().change_scene("res://ressources/scenes/create_configuration.tscn")
-
-
-func _setup_coin_db():
-	var db_name = "res://test"
-	
-	#table structure
-	var table_dict : Dictionary = Dictionary()	
-	table_dict["id"] = {"data_type":"int", "primary_key":true, "not_null":true}
-	table_dict["username"] = {"data_type":"char(100)", "not_null":true}
-	table_dict["coins"] = {"data_type":"int", "not_null":true}
-	
-	db.open_db() # opens db found in db_name
-	db.drop_table(table_name)
-	db.create_table(table_name, table_dict)
-	#db.query("CREATE TABLE IF NOT EXISTS " + table_name) #create table
-	db.close_db()
-	
+	get_tree().change_scene("res://ressources/scenes/create_configuration.tscn")	
 	
 #TwiCIL functions
 func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):

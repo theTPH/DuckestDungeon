@@ -1,9 +1,5 @@
 extends Node
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
 const db_path = "res://test.db"
 const table_name = "user_coins"
@@ -12,7 +8,18 @@ onready var db = SQLite.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	db.path=db_path
-	db.verbose_mode = true # Replace with function body.
+	db.verbose_mode = true 
+
+func _setup_coin_table():
+	#table structure
+	var table_dict : Dictionary = Dictionary()	
+	table_dict["id"] = {"data_type":"int", "primary_key":true, "not_null":true}
+	table_dict["username"] = {"data_type":"char(100)", "not_null":true}
+	table_dict["coins"] = {"data_type":"int", "not_null":true}
+	
+	db.open_db() # opens db found in db_path
+	db.create_table(table_name, table_dict)
+	db.close_db()
 
 func get_coins(user):
 	var select_condition = ""
