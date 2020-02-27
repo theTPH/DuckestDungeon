@@ -25,21 +25,7 @@ func _ready():
 	userlist.append(user_dict)
 	var ws = websocket
 	
-	#time for the coin giving method that has to be called every X seconds
-	
-	# at the moment starts as sonn as programm gets startet should be called after the connect button is pressed
-	#timer = Timer.new()
-	#add_child(timer)
-	#timer.connect("timeout", self, "_earn_coins_viewing_time")
-	#timer.set_wait_time(5.0)
-	#timer.set_one_shot(false) # Make sure it loops
-	#timer.start()
-	
-	#for trubbleshooting only
-	var datab = database_connection
-	datab.get_coins("thetph")
-	datab.remove_coins("thetph", 10)
-	
+
 	
 func _on_button_connect_pressed():
 	var config = File.new()
@@ -62,6 +48,13 @@ func _on_button_connect_pressed():
 	config.close()
 	#_setup_coin_db()
 	_setup_twicil(bot_nik, oauth_token, client_id, channel_name)
+	#timer for the coin giving method that has to be called every X seconds
+	timer = Timer.new()
+	add_child(timer)
+	timer.connect("timeout", self, "_earn_coins_viewing_time")
+	timer.set_wait_time(5.0)
+	timer.set_one_shot(false) # Make sure it loops
+	timer.start()
 	
 func _on_button_disconnect_pressed():
 	pass
