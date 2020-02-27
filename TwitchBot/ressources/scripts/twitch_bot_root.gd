@@ -46,8 +46,8 @@ func _on_button_connect_pressed():
 		elif line[0] == "channel_name":
 			channel_name = line[1]
 	config.close()
-	#_setup_coin_db()
 	_setup_twicil(bot_nik, oauth_token, client_id, channel_name)
+	
 	#timer for the coin giving method that has to be called every X seconds
 	timer = Timer.new()
 	add_child(timer)
@@ -95,27 +95,15 @@ func _connect_signals():
 
 #Bot functions
 func _on_user_appeared(user):
-	var select_condition = ""
-	var username
-	var row_array : Array = []
-	var row_dict : Dictionary = Dictionary()
+	var user_exists
 	
 	#add user to the database if not allready existing
-	db.open_db()
-	select_condition = "username ='" + user + "'"
-	username = db.select_rows(table_name, select_condition, ["username"])
-
-	if username == []:
-		twicil.send_message("Hey a new face :D Welcome " + user)
-		row_dict["username"] = user
-		row_dict["coins"] = 10
-		row_array.append(row_dict)
-		db.insert_rows(table_name, row_array)
+	user_exists = db_connect.add_db_user(user)
+	if user_exists == true:
+		twicil.send_message(str("Hey welcome back ", user))
 	else:
-		twicil.send_message(str("Hey Welcome back @", user, " :D"))
-	db.close_db()
-	
-	var user_exists = false;
+		twicil.send_message(str("Hey a new face :D Welcome ", user))
+	user_exists = false;
 	for i in range(userlist.size()):	
 		if userlist[i]["username"] == user:
 			user_exists = true
