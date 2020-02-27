@@ -1,7 +1,6 @@
 extends Node2D
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	var lab_bot_nik = get_node("label_bot_nik")
 	var lab_oauth_token = get_node("label_oauth_token")

@@ -117,7 +117,6 @@ func _on_user_disappeared(user):
 		
 func _earn_coins_viewing_time():
 	var time_elapsed = 0
-	var condition = ""
 	var coins = 0
 	var username = ""
 	
@@ -126,10 +125,9 @@ func _earn_coins_viewing_time():
 		time_elapsed = OS.get_ticks_msec() - userlist[i]["timestamp"]
 		if time_elapsed > tick_time: #in milliseconds
 			userlist[i]["timestamp"] = OS.get_ticks_msec()
-			condition = str("username = '", userlist[i]["username"], "'")
 			username = userlist[i]["username"]
 			
-			db_connect.add_coins(username, condition, earnable_coins)
+			db_connect.add_coins(username, earnable_coins)
 			twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
 
 #Bot command functions
