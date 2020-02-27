@@ -185,14 +185,8 @@ func _command_current_coins(params):
 	var user = params[0]
 	var coins
 	var select_condition
-	
-	db.open_db()	
-	select_condition = "username ='" + user + "'"
-	coins = db.select_rows(table_name, select_condition, ["coins"])
-	db.close_db()
-	#db.query("SELECT coins FROM user_coins WHERE username=" + user)
-	coins = coins[0]["coins"]
-	#coins = str(coins[0]).substr(7,str(coins).length()-10) #cuts out coin number only
+
+	coins = db_connect.get_coins(user)
 	twicil.send_whisper(user, str("Hey whats up ", user, ". You have ", coins , " coins"))
 
 func _command_show_commands(params):
