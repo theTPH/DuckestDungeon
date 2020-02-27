@@ -28,12 +28,12 @@ func _ready():
 	#time for the coin giving method that has to be called every X seconds
 	
 	# at the moment starts as sonn as programm gets startet should be called after the connect button is pressed
-	timer = Timer.new()
-	add_child(timer)
-	timer.connect("timeout", self, "_earn_coins_viewing_time")
-	timer.set_wait_time(5.0)
-	timer.set_one_shot(false) # Make sure it loops
-	timer.start()
+	#timer = Timer.new()
+	#add_child(timer)
+	#timer.connect("timeout", self, "_earn_coins_viewing_time")
+	#timer.set_wait_time(5.0)
+	#timer.set_one_shot(false) # Make sure it loops
+	#timer.start()
 	
 	#for trubbleshooting only
 	var datab = database_connection
@@ -204,17 +204,17 @@ func _command_show_commands(params):
 func _command_send_xp(params):
 	var select_condition = ""
 	var object  = message
-	var coins
+	var user = params[0]
+	var current_coins = db_connect.get_coins(user)
+	var coins_spent = params[1]
+	coins_spent = int(coins_spent) # cast to int after assignment because twicil will crash if the cast to int happens at assignment
 	
-	coins = db_connect.get_coins(params[0])
-	#db.open_db()
-	#select_condition = "username ='" + params[0] + "'"
-	#coins = db.select_rows(table_name, select_condition, ["coins"])
-	#db.close_db()
-	
-	object.user = params[0]
-	object.coins_used = params[1]
-	object.xp = int(object.coins_used) * 2
-	websocket.send(object) #activate when Marcel fixed stuff
-	
-	twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))
+	if current_coins >= coins_spent:
+		object.user = user
+		object.coins_used = coins_spent
+		object.xp = int(object.coins_used) * 2
+		db_connect.remove_coins(user, coins_spent)
+		#websocket.send(object) #activate when Marcel fixed stuff
+		twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))
+	else:
+		twicil.send_whisper(user, "You dont have enaugh coins!")

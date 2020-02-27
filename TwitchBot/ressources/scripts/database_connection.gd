@@ -23,8 +23,7 @@ func get_coins(user):
 	select_condition = "username ='" + user + "'"
 	db_array = db.select_rows(table_name, select_condition, ["coins"])
 	db.close_db()
-	user_coins = db_array[0]["coins"]
-	print(user_coins) #debug only
+	user_coins = int(db_array[0]["coins"])
 	return user_coins
 	
 func remove_coins(user, amount):
