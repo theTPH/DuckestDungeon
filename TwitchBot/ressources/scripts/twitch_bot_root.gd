@@ -198,7 +198,8 @@ func _command_current_coins(params):
 func _command_show_commands(params):
 	var user = params[0]
 	twicil.send_whisper(user, str("You can use the following commands:\n",
-						"!mycoins -> shows your current coin balance.\n"))
+						"!mycoins -> shows your current coin balance.\n",
+						"!sendxp {amount} -> You spend {amount} of your coins to git xp to Duckest Dungeon. \n"))
 	pass
 
 func _command_send_xp(params):
