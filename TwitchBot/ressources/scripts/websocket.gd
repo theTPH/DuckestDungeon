@@ -53,7 +53,10 @@ func _on_data(id):
 	# and not get_packet directly when not using the MultiplayerAPI.
 	var pkt = _server.get_peer(id).get_packet()
 	print("Got data from client %d: %s ... echoing" % [id, pkt.get_string_from_utf8()])
-	_send(id, pkt.get_string_from_utf8())
+	var m = message.fromJson(pkt.get_string_from_utf8())
+	print(m.toJson())
+	# und einfach wieder zurück schicken
+	websocket.send(m)
 
 func _process(delta):
 	# Call this in _process or _physics_process.
@@ -68,5 +71,5 @@ func _send(id, message):
 		print("Fehler beim senden der Nachricht. ID: %d" %[id])
 		return false
 	# the object is converted to json
-	_server.get_peer(id).put_packet(to_json(message).to_utf8())
+	_server.get_peer(id).put_packet(message.toJson().to_utf8())
 	return true
