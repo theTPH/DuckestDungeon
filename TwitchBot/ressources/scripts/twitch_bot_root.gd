@@ -2,11 +2,8 @@ extends Control
 
 #variables for configuration and tweaking
 const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
-const db_path = "res://test.db"
-const table_name = "user_coins"
 
 onready var twicil = get_node("TwiCIL")
-onready var db = SQLite.new()
 onready var userlist : Array = []
 onready var timer = null
 onready var earnable_coins = 10 # defines the amount of coins a user can earn every tick
@@ -16,8 +13,6 @@ onready var db_connect = database_connection
 # Godot / element functions
 func _ready():
 	#gets called when scene is loaded
-	db.path=db_path
-	db.verbose_mode = true
 	var user_dict : Dictionary = Dictionary()
 	user_dict["username"] = "init"
 	var time = OS.get_ticks_msec()
@@ -25,21 +20,7 @@ func _ready():
 	userlist.append(user_dict)
 	var ws = websocket
 	
-	#time for the coin giving method that has to be called every X seconds
-	
-	# at the moment starts as sonn as programm gets startet should be called after the connect button is pressed
-	timer = Timer.new()
-	add_child(timer)
-	timer.connect("timeout", self, "_earn_coins_viewing_time")
-	timer.set_wait_time(5.0)
-	timer.set_one_shot(false) # Make sure it loops
-	timer.start()
-	
-	#for trubbleshooting only
-	var datab = database_connection
-	datab.get_coins("thetph")
-	datab.remove_coins("thetph", 10)
-	
+
 	
 func _on_button_connect_pressed():
 	var config = File.new()
@@ -60,8 +41,15 @@ func _on_button_connect_pressed():
 		elif line[0] == "channel_name":
 			channel_name = line[1]
 	config.close()
-	#_setup_coin_db()
 	_setup_twicil(bot_nik, oauth_token, client_id, channel_name)
+	
+	#timer for the coin giving method that has to be called every X seconds
+	timer = Timer.new()
+	add_child(timer)
+	timer.connect("timeout", self, "_earn_coins_viewing_time")
+	timer.set_wait_time(5.0)
+	timer.set_one_shot(false) # Make sure it loops
+	timer.start()
 	
 func _on_button_disconnect_pressed():
 	pass
@@ -69,24 +57,7 @@ func _on_button_disconnect_pressed():
 	#twicil.disconnect()
 
 func _on_button_create_config_pressed():
-	get_tree().change_scene("res://ressources/scenes/create_configuration.tscn")
-
-
-func _setup_coin_db():
-	var db_name = "res://test"
-	
-	#table structure
-	var table_dict : Dictionary = Dictionary()	
-	table_dict["id"] = {"data_type":"int", "primary_key":true, "not_null":true}
-	table_dict["username"] = {"data_type":"char(100)", "not_null":true}
-	table_dict["coins"] = {"data_type":"int", "not_null":true}
-	
-	db.open_db() # opens db found in db_name
-	db.drop_table(table_name)
-	db.create_table(table_name, table_dict)
-	#db.query("CREATE TABLE IF NOT EXISTS " + table_name) #create table
-	db.close_db()
-	
+	get_tree().change_scene("res://ressources/scenes/create_configuration.tscn")	
 	
 #TwiCIL functions
 func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
@@ -119,27 +90,15 @@ func _connect_signals():
 
 #Bot functions
 func _on_user_appeared(user):
-	var select_condition = ""
-	var username
-	var row_array : Array = []
-	var row_dict : Dictionary = Dictionary()
+	var user_exists
 	
 	#add user to the database if not allready existing
-	db.open_db()
-	select_condition = "username ='" + user + "'"
-	username = db.select_rows(table_name, select_condition, ["username"])
-
-	if username == []:
-		twicil.send_message("Hey a new face :D Welcome " + user)
-		row_dict["username"] = user
-		row_dict["coins"] = 10
-		row_array.append(row_dict)
-		db.insert_rows(table_name, row_array)
+	user_exists = db_connect.add_db_user(user)
+	if user_exists == true:
+		twicil.send_message(str("Hey welcome back ", user))
 	else:
-		twicil.send_message(str("Hey Welcome back @", user, " :D"))
-	db.close_db()
-	
-	var user_exists = false;
+		twicil.send_message(str("Hey a new face :D Welcome ", user))
+	user_exists = false;
 	for i in range(userlist.size()):	
 		if userlist[i]["username"] == user:
 			user_exists = true
@@ -159,7 +118,6 @@ func _on_user_disappeared(user):
 func _earn_coins_viewing_time():
 	var time_elapsed = 0
 	var coins = 0
-	var condition = ""
 	var username = ""
 	
 	
@@ -167,16 +125,10 @@ func _earn_coins_viewing_time():
 		time_elapsed = OS.get_ticks_msec() - userlist[i]["timestamp"]
 		if time_elapsed > tick_time: #in milliseconds
 			userlist[i]["timestamp"] = OS.get_ticks_msec()
-			condition = str("username = '", userlist[i]["username"], "'")
 			username = userlist[i]["username"]
 			
-			db.open_db()
-			coins = db.select_rows(table_name, condition, ["coins"])
-			if coins != []:
-				coins = coins[0]["coins"] + earnable_coins
-				db.update_rows(table_name, condition, {"username":username, "coins":coins})
-				twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
-			#db.query()
+			db_connect.add_coins(username, earnable_coins)
+			twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
 
 #Bot command functions
 func _command_current_coins(params):
@@ -185,36 +137,31 @@ func _command_current_coins(params):
 	var user = params[0]
 	var coins
 	var select_condition
-	
-	db.open_db()	
-	select_condition = "username ='" + user + "'"
-	coins = db.select_rows(table_name, select_condition, ["coins"])
-	db.close_db()
-	#db.query("SELECT coins FROM user_coins WHERE username=" + user)
-	coins = coins[0]["coins"]
-	#coins = str(coins[0]).substr(7,str(coins).length()-10) #cuts out coin number only
+
+	coins = db_connect.get_coins(user)
 	twicil.send_whisper(user, str("Hey whats up ", user, ". You have ", coins , " coins"))
 
 func _command_show_commands(params):
 	var user = params[0]
 	twicil.send_whisper(user, str("You can use the following commands:\n",
-						"!mycoins -> shows your current coin balance.\n"))
+						"!mycoins -> shows your current coin balance.\n",
+						"!sendxp {amount} -> You spend {amount} of your coins to git xp to Duckest Dungeon. \n"))
 	pass
 
 func _command_send_xp(params):
 	var select_condition = ""
 	var object  = message
-	var coins
+	var user = params[0]
+	var current_coins = db_connect.get_coins(user)
+	var coins_spent = params[1]
+	coins_spent = int(coins_spent) # cast to int after assignment because twicil will crash if the cast to int happens at assignment
 	
-	coins = db_connect.get_coins()
-	#db.open_db()
-	#select_condition = "username ='" + params[0] + "'"
-	#coins = db.select_rows(table_name, select_condition, ["coins"])
-	#db.close_db()
-	
-	object.user = params[0]
-	object.coins_used = params[1]
-	object.xp = int(object.coins_used) * 2
-	websocket.send(object) #activate when Marcel fixed stuff
-	
-	twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))
+	if current_coins >= coins_spent:
+		object.user = user
+		object.coins_used = coins_spent
+		object.xp = int(object.coins_used) * 2
+		db_connect.remove_coins(user, coins_spent)
+		#websocket.send(object) #activate when Marcel fixed stuff
+		twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))
+	else:
+		twicil.send_whisper(user, "You dont have enaugh coins!")

@@ -1,3 +1,4 @@
 addons/godot-git-control.funabab/
 *.import
+*.db
 export_presets.cfg

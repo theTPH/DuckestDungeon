@@ -64,6 +64,7 @@ func _process(delta):
 	_server.poll()
 
 func send(message):
+	print(" ID: %d" %[_id])
 	_send(_id, message)
 
 func _send(id, message):
