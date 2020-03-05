@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gui/scoreboard/ScoreBoard.cs" type="Script" id=1]
+
+[node name="ScoreBoard" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1600.0
+margin_bottom = -1035.0
+rect_min_size = Vector2( 320, 45 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UpdateTimer" type="Timer" parent="."]
+wait_time = 10.0
+[connection signal="timeout" from="UpdateTimer" to="." method="OnUpdateTimerTimeOut"]

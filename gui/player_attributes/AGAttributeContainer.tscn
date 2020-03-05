@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://gui/player_attributes/SingleAttributeContainer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://gui/player_attributes/AGAttributeContainer.cs" type="Script" id=2]
+
+[node name="AGAttributeContainer" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+AName = "AGI"
+AValue = 8
+
+[node name="APointsLabel" parent="SingleAttributePanel/VBoxContainer" index="0"]
+text = "8"
+
+[node name="ANameLabel" parent="SingleAttributePanel/VBoxContainer" index="1"]
+text = "AGI"

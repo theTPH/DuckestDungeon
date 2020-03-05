@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gui/scoreboard/ScoreLine.cs" type="Script" id=1]
+
+[node name="ScoreLine" type="Control"]
+margin_right = 316.0
+margin_bottom = 41.0
+rect_min_size = Vector2( 316, 41 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineContainer" type="HBoxContainer" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -149.0
+margin_top = -16.0
+margin_right = 149.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 14
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RankingLabel" type="Label" parent="Panel/LineContainer"]
+margin_top = 8.0
+margin_right = 20.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 20, 0 )
+text = "1"
+align = 2
+valign = 1
+
+[node name="UsernameLabel" type="Label" parent="Panel/LineContainer"]
+margin_left = 34.0
+margin_top = 8.0
+margin_right = 184.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 150, 0 )
+text = "MegaEnte"
+valign = 1
+
+[node name="PointsLabel" type="Label" parent="Panel/LineContainer"]
+margin_left = 198.0
+margin_top = 8.0
+margin_right = 298.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 100, 0 )
+text = "45678"
+align = 2
+valign = 1
