@@ -8,8 +8,8 @@ onready var userlist : Array = []
 onready var timer = null
 onready var earnable_coins = 10 # defines the amount of coins a user can earn every tick
 onready var tick_time = 10000 # defines the time every tick takes in milisecons
-onready var db_connect = database_connection #connection to database_connection "class" ---gdscript doesn't really have classes only files handled a bit like classes e.g. there are no private variables/mehtods
-onready var ws = websocket # connection to websocket "class"
+onready var db_connect = database_connection #instance of database_connection class ---gdscript has a weired way of handling classes
+onready var ws = websocket # instance of websocket class
 
 
 func _ready():
@@ -133,6 +133,8 @@ func _earn_coins_viewing_time():
 			twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
 
 func _voting_system():
+	twicil.send_message("Hey my freinds you now have to opportunity to vote how the adventure should continue")
+	twicil.send_message()
 	pass
 
 #Bot command functions
