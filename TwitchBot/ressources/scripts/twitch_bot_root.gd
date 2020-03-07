@@ -8,18 +8,19 @@ onready var userlist : Array = []
 onready var timer = null
 onready var earnable_coins = 10 # defines the amount of coins a user can earn every tick
 onready var tick_time = 10000 # defines the time every tick takes in milisecons
-onready var db_connect = database_connection
+onready var db_connect = database_connection #connection to database_connection "class" ---gdscript doesn't really have classes only files handled a bit like classes e.g. there are no private variables/mehtods
+onready var ws = websocket # connection to websocket "class"
 
-# Godot / element functions
+
 func _ready():
 	#gets called when scene is loaded
+	#initialise user_dict ...mus get an initial value, gdscript cant handle empty dicts very well
 	var user_dict : Dictionary = Dictionary()
 	user_dict["username"] = "init"
 	var time = OS.get_ticks_msec()
 	user_dict["timestamp"] = time
 	userlist.append(user_dict)
-	var ws = websocket
-	db_connect.setup_coin_table()
+	db_connect.setup_coin_table() #sets up the coin database
 	
 
 	

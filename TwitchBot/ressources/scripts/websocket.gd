@@ -53,7 +53,7 @@ func _on_data(id):
 	# and not get_packet directly when not using the MultiplayerAPI.
 	var pkt = _server.get_peer(id).get_packet()
 	print("Got data from client %d: %s ... echoing" % [id, pkt.get_string_from_utf8()])
-	var m = message.fromJson(pkt.get_string_from_utf8())
+	var m = message_coins.fromJson(pkt.get_string_from_utf8())
 	print(m.toJson())
 	# und einfach wieder zurück schicken
 	websocket.send(m)

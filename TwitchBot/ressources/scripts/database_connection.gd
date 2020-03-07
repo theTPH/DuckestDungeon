@@ -24,7 +24,7 @@ func setup_coin_table():
 	table_dict["coins"] = {"data_type":"int", "not_null":true}
 	
 	db.open_db() # opens db found in db_path
-	db.create_table(table_name, table_dict)
+	db.create_table(table_name, table_dict) #only creates table if not existing
 	db.close_db()
 
 func add_db_user(user):
