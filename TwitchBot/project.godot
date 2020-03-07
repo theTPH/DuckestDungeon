@@ -135,8 +135,8 @@ config/icon="res://icon.png"
 [autoload]
 
 websocket="*res://ressources/scripts/websocket.gd"
-message="*res://ressources/scripts/message.gd"
 database_connection="*res://ressources/scripts/database_connection.gd"
+message_coins="*res://ressources/scripts/message_coins.gd"
 
 [editor_plugins]
 

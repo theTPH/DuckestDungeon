@@ -21,7 +21,7 @@ static func fromJson(text):
 	if (typeof(dict) != TYPE_DICTIONARY):
 		return null
 	
-	var m = message
+	var m = message_coins
 	m.user = dict["user"]
 	m.xp = dict["xp"]
 	m.coins_used = dict["coins_used"]

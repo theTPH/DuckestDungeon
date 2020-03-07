@@ -151,7 +151,7 @@ func _command_show_commands(params):
 
 func _command_send_xp(params):
 	var select_condition = ""
-	var object  = message
+	var object  = message_coins
 	var user = params[0]
 	var current_coins = db_connect.get_coins(user)
 	var coins_spent = params[1]
