@@ -116,7 +116,7 @@ func _on_user_disappeared(user):
 		if userlist[i]["username"] == user:
 			print("found")
 			userlist.remove(i)
-		
+
 func _earn_coins_viewing_time():
 	var time_elapsed = 0
 	var coins = 0
@@ -131,6 +131,9 @@ func _earn_coins_viewing_time():
 			
 			db_connect.add_coins(username, earnable_coins)
 			twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
+
+func _voting_system():
+	pass
 
 #Bot command functions
 func _command_current_coins(params):

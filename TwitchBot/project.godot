@@ -137,6 +137,7 @@ config/icon="res://icon.png"
 websocket="*res://ressources/scripts/websocket.gd"
 database_connection="*res://ressources/scripts/database_connection.gd"
 message_coins="*res://ressources/scripts/message_coins.gd"
+message_vote="*res://ressources/scripts/message_vote.gd"
 
 [editor_plugins]
 
