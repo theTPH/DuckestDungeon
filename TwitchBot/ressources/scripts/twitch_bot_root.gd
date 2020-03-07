@@ -19,6 +19,7 @@ func _ready():
 	user_dict["timestamp"] = time
 	userlist.append(user_dict)
 	var ws = websocket
+	db_connect.setup_coin_table()
 	
 
 	
@@ -161,7 +162,7 @@ func _command_send_xp(params):
 		object.coins_used = coins_spent
 		object.xp = int(object.coins_used) * 2
 		db_connect.remove_coins(user, coins_spent)
-		#websocket.send(object) #activate when Marcel fixed stuff
+		websocket.send(object) #activate when Marcel fixed stuff
 		twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))
 	else:
 		twicil.send_whisper(user, "You dont have enaugh coins!")
