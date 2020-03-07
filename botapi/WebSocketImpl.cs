@@ -15,8 +15,20 @@ public class WebSocketImpl : WebSocket
 	{
 		this.OnMessage += (sender, e) =>
 		{
-			Message m = JsonConvert.DeserializeObject<Message>(e.Data);
-			logging.Logger.logger.Info("incoming Message: " + m.ToString());
+			logging.Logger.logger.Debug("incoming Message: " + e.Data);
+			string[] msg = System.Text.RegularExpressions.Regex.Split(e.Data, "##");
+			switch(msg[0])
+			{
+				case "message_coins":
+					MessageCoins messageCoins = JsonConvert.DeserializeObject<MessageCoins>(msg[1]);
+				break;
+				case "message_vote":
+					MessageVote messageVote = JsonConvert.DeserializeObject<MessageVote>(msg[1]);
+				break;
+				default:
+					logging.Logger.logger.Warn("Could not parse Message Object: " + e.Data);
+				break;
+			}
 		};
 		this.OnClose += (sender, e) =>
 			logging.Logger.logger.Info("WS-Verbindung zu Server geschlossen");
@@ -24,17 +36,22 @@ public class WebSocketImpl : WebSocket
 		this.Connect ();
 
 		// Beispiel send
-		Message message = new Message();
+		MessageCoins message = new MessageCoins();
 		message.coins_used = 5;
 		message.user = "hallo";
 		message.xp = 5664;
 		this.send(message);
 	}
 
-	void send(Message m)
+	void send(Object m)
 	{
+		string prefix = "";
+		if (m is MessageCoins)
+			prefix = "message_coins";
+		else
+			prefix = "message_vote";
 		//var json = new JavaScriptSerializer().Serialize(m);
-		var json = JsonConvert.SerializeObject(m);
+		var json = prefix + "##" + JsonConvert.SerializeObject(m);
 		logging.Logger.logger.Info("Sending Message: " + json);
 		this.Send(json);
 	}

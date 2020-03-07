@@ -1,4 +1,4 @@
-public class Message
+public class MessageCoins
 {
 	public string user {get; set;}
 	public int xp {get; set;}
