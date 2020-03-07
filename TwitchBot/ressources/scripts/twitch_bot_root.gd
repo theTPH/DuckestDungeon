@@ -21,6 +21,7 @@ func _ready():
 	user_dict["timestamp"] = time
 	userlist.append(user_dict)
 	db_connect.setup_coin_table() #sets up the coin database
+	ws.set_root(self)
 	
 
 	
@@ -132,10 +133,10 @@ func _earn_coins_viewing_time():
 			db_connect.add_coins(username, earnable_coins)
 			twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
 
-func _voting_system():
-	twicil.send_message("Hey my freinds you now have to opportunity to vote how the adventure should continue")
-	twicil.send_message()
-	pass
+func _voting_system(messsage_vote):
+	twicil.send_message(str("Hey my freinds you now have to opportunity to vote how the adventure should continue\n",
+	"Write !option1 to spend 10 coins and vote for: ", message_vote.option1,
+	"Write !option2 to spend 10 coins and vote for: ", message_vote.option2))
 
 #Bot command functions
 func _command_current_coins(params):

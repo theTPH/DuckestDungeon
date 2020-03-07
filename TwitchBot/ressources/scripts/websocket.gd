@@ -3,7 +3,8 @@ extends Node
 # The port we will listen to
 const PORT = 9080
 # Our WebSocketServer instance
-var _server = WebSocketServer.new()
+onready var _server = WebSocketServer.new()
+onready var root
 
 var _id = 0;
 
@@ -23,6 +24,9 @@ func _ready():
 	if err != OK:
 		print("Unable to start server")
 		set_process(false)
+
+func set_root(root):
+	self.root = root
 
 func _connected(id, proto):
 	if _id == 0:
@@ -57,14 +61,16 @@ func _on_data(id):
 	var m
 	match arr[0]:
 		"message_coins":
-			m = message_coins.fromJson(pkt.get_string_from_utf8())
+			m = message_coins.fromJson(arr[1])
 		"message_vote":
-			m = message_vote.fromJson(pkt.get_string_from_utf8())
+			m = message_vote.fromJson(arr[1])
+			root._voting_system(m)
+			
 		_:
 			print("Could not parse Message Object: " + pkt.get_string_from_utf8())
 	
 	# und einfach wieder zurück schicken
-	websocket.send(m)
+	websocket.send(m) # testing
 
 func _process(delta):
 	# Call this in _process or _physics_process.
@@ -82,9 +88,9 @@ func _send(id, message):
 	
 	var pre = ""
 	if message is preload("message_coins.gd"):
-		pre = "message_vote"
-	elif message is preload("message_vote.gd"):
 		pre = "message_coins"
+	elif message is preload("message_vote.gd"):
+		pre = "message_vote"
 
 	# the object is converted to json
 	_server.get_peer(id).put_packet((pre + "##" + message.toJson()).to_utf8())

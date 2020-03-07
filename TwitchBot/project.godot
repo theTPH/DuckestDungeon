@@ -138,6 +138,7 @@ websocket="*res://ressources/scripts/websocket.gd"
 database_connection="*res://ressources/scripts/database_connection.gd"
 message_coins="*res://ressources/scripts/message_coins.gd"
 message_vote="*res://ressources/scripts/message_vote.gd"
+twitch_bot_root="*res://ressources/scripts/twitch_bot_root.gd"
 
 [editor_plugins]
 
