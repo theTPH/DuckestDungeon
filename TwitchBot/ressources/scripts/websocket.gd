@@ -80,7 +80,7 @@ func _send(id, message):
 		print("Fehler beim senden der Nachricht. ID: %d" %[id])
 		return false
 	
-	var pre
+	var pre = ""
 	if message is preload("message_coins.gd"):
 		pre = "message_vote"
 	elif message is preload("message_vote.gd"):
