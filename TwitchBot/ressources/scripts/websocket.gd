@@ -53,8 +53,16 @@ func _on_data(id):
 	# and not get_packet directly when not using the MultiplayerAPI.
 	var pkt = _server.get_peer(id).get_packet()
 	print("Got data from client %d: %s ... echoing" % [id, pkt.get_string_from_utf8()])
-	var m = message_coins.fromJson(pkt.get_string_from_utf8())
-	print(m.toJson())
+	var arr = pkt.get_string_from_utf8().split("##")
+	var m
+	match arr[0]:
+		"message_coins":
+			m = message_coins.fromJson(pkt.get_string_from_utf8())
+		"message_vote":
+			m = message_vote.fromJson(pkt.get_string_from_utf8())
+		_:
+			print("Could not parse Message Object: " + pkt.get_string_from_utf8())
+	
 	# und einfach wieder zurück schicken
 	websocket.send(m)
 
@@ -71,6 +79,13 @@ func _send(id, message):
 	if !_server.get_peer(id):
 		print("Fehler beim senden der Nachricht. ID: %d" %[id])
 		return false
+	
+	var pre
+	if message is preload("message_coins.gd"):
+		pre = "message_vote"
+	elif message is preload("message_vote.gd"):
+		pre = "message_coins"
+
 	# the object is converted to json
-	_server.get_peer(id).put_packet(message.toJson().to_utf8())
+	_server.get_peer(id).put_packet((pre + "##" + message.toJson()).to_utf8())
 	return true
