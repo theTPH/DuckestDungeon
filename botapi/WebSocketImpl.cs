@@ -36,11 +36,11 @@ public class WebSocketImpl : WebSocket
 		this.Connect ();
 
 		// Beispiel send
-		MessageCoins message = new MessageCoins();
-		message.coins_used = 5;
-		message.user = "hallo";
-		message.xp = 5664;
+		MessageVote message = new MessageVote();
+		message.option1 = "erste option";
+		message.option2 = "zweite option";
 		this.send(message);
+
 	}
 
 	void send(Object m)
