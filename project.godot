@@ -19,10 +19,6 @@ config/name="Ddv 0 . 0 . 1"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-Global="*res://Global.cs"
-
 [display]
 
 window/size/width=1920
