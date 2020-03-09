@@ -46,21 +46,21 @@ public class APBoxContainer : VBoxContainer
 
     public void OnSetPointsButtonPressed()
     {
-        ToggleAPEditMode();
-        
         // save new points data to player data
-        if (!APEditMode)
+        if (APEditMode)
         {
             EmitSignal(nameof(APEditConfirmed));
         }
+
+        ToggleAPEditMode();
     }
 
     public void OnCancelButtonPressed()
     {
-        ToggleAPEditMode();
-        
         // reset points
         EmitSignal(nameof(APEditCancelled));
+
+        ToggleAPEditMode();
     }
 
     public void ToggleAPEditMode()
@@ -76,6 +76,12 @@ public class APBoxContainer : VBoxContainer
             APEditMode = false;
             SetAPButton.Text = "+";
             CancelButton.Visible = false;
+
+            //disable AP edit, if no AP left
+            if (Global.PlayerAttributes.Ap <= 0)
+            {
+                SetAPButton.Disabled = true;
+            }
         }
 
         EmitSignal(nameof(APEditToggled));

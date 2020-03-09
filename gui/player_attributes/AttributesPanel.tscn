@@ -57,6 +57,12 @@ margin_bottom = 90.0
 margin_left = 0.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
+[connection signal="PointsDecreased" from="HBoxContainer/STRAttributeContainer" to="." method="OnPointsDecreased"]
+[connection signal="PointsIncreased" from="HBoxContainer/STRAttributeContainer" to="." method="OnPointsIncreased"]
+[connection signal="PointsDecreased" from="HBoxContainer/HPAttributeContainer" to="." method="OnPointsDecreased"]
+[connection signal="PointsIncreased" from="HBoxContainer/HPAttributeContainer" to="." method="OnPointsIncreased"]
+[connection signal="PointsDecreased" from="HBoxContainer/AGAttributeContainer" to="." method="OnPointsDecreased"]
+[connection signal="PointsIncreased" from="HBoxContainer/AGAttributeContainer" to="." method="OnPointsIncreased"]
 [connection signal="APEditCancelled" from="HBoxContainer/CenterContainer/APBoxContainer" to="." method="OnAPEditCancelled"]
 [connection signal="APEditConfirmed" from="HBoxContainer/CenterContainer/APBoxContainer" to="." method="OnAPEditConfirmed"]
 [connection signal="APEditToggled" from="HBoxContainer/CenterContainer/APBoxContainer" to="." method="OnAPEditToggled"]

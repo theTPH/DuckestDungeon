@@ -47,6 +47,11 @@ public class SingleAttributeContainer : VBoxContainer
         DecreasePointsValue();
     }
 
+    public void OnApZeroed()
+    {
+        PlusButton.Disabled = true;
+    }
+
     public void ToggleEditButtons()
     {
         PlusButton.Disabled = !PlusButton.Disabled;
@@ -77,5 +82,4 @@ public class SingleAttributeContainer : VBoxContainer
     {
         return Convert.ToInt32(APointsLabel.Text);
     }
-
 }
