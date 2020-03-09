@@ -1,0 +1,79 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/dungeon/plattform_dummy.png" type="Texture" id=1]
+
+[sub_resource type="PhysicsMaterial" id=1]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 2000, 25 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 31.926, 457.421 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 120, 180 )
+
+[node name="Floor" type="Node2D"]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2( 1893.82, 746.1 )
+physics_material_override = SubResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Ground"]
+position = Vector2( 0.722656, -1.54309 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource( 2 )
+
+[node name="SectionChangeAreas" type="Node" parent="."]
+
+[node name="SecChange1" type="Area2D" parent="SectionChangeAreas"]
+position = Vector2( 960.783, 414.924 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SectionChangeAreas/SecChange1"]
+shape = SubResource( 3 )
+
+[node name="SecChange2" type="Area2D" parent="SectionChangeAreas"]
+position = Vector2( 1920.44, 418.772 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SectionChangeAreas/SecChange2"]
+shape = SubResource( 3 )
+
+[node name="SecChange3" type="Area2D" parent="SectionChangeAreas"]
+position = Vector2( 2880.35, 418.772 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SectionChangeAreas/SecChange3"]
+shape = SubResource( 3 )
+
+[node name="WarpZones" type="Node" parent="."]
+
+[node name="Start" type="Area2D" parent="WarpZones"]
+position = Vector2( 201.385, 555.032 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpZones/Start"]
+shape = SubResource( 4 )
+
+[node name="End" type="Area2D" parent="WarpZones"]
+position = Vector2( 3598.18, 555.032 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpZones/End"]
+shape = SubResource( 4 )
