@@ -143,35 +143,34 @@ func _voting_system(messsage_vote):
 	"Write !option1 to spend 10 coins and vote for: ", message_vote.option1, "\n",
 	"Write !option2 to spend 10 coins and vote for: ", message_vote.option2, "\n"))
 	var voting_timer = Timer.new()
-	voting_timer.set_wait_time(30.0)
+	add_child(voting_timer)
+	voting_timer.set_wait_time(60.0)
+	timer.connect("timeout", self, "_voting_results", [message_vote])
 	voting_timer.set_one_shot(true) # only one countdown
 	voting_timer.start()
-	if voting_timer.time_left == 0:
-		var option_1_votes = votinglist1.size()
-		var option_2_votes = votinglist2.size()
+	
+func _voting_results(message_vote):
+	var option_1_votes = votinglist1.size()
+	var option_2_votes = votinglist2.size()
 		
-		if option_1_votes > option_2_votes:
-			twicil.send_message("Option 1 won!")
+	if option_1_votes > option_2_votes:
+		twicil.send_message("Option 1 won!")
+		message_vote.option1Chosen = true
+	elif option_2_votes > option_1_votes:
+		twicil.send_message("option 2 won!")
+		message_vote.option1Chosen = false
+	else:
+		twicil.send_message("It's a tie! Random Option will be chosen.")
+		var rand = floor(rand_range(0,1)) #random int 0 or 1
+		if rand == 0:
+			twicil.send_message("Option 1 was chosen at random!")
 			message_vote.option1Chosen = true
-		elif option_2_votes > option_1_votes:
-			twicil.send_message("option 2 won!")
-			message_vote.option1Chosen = false
 		else:
-			twicil.send_message("It's a tie! Random Option will be chosen.")
-			var rand = floor(rand_range(0,1)) #random int 0 or 1
-			if rand == 0:
-				twicil.send_message("Option 1 was chosen at random!")
-				message_vote.option1Chosen = true
-			else:
-				twicil.send_message("Option 2 was chosen at random!")
-				message_vote.option1Chosen = false
-		websocket.send(message_vote)
-	elif voting_timer.time_left == 15:
-		twicil.send_message("15 seconds left to vote!")
+			twicil.send_message("Option 2 was chosen at random!")
+			message_vote.option1Chosen = false
+	websocket.send(message_vote)
 	votinglist1.clear()
 	votinglist2.clear()
-	
-	
 
 #Bot command functions
 func _command_current_coins(params):
