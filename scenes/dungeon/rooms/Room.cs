@@ -6,7 +6,6 @@ public class Room : Node2D
     private PackedScene _playerScene = (PackedScene)GD.Load("res://character/player/Player.tscn");
     private PackedScene _enemyScene = (PackedScene)GD.Load("res://character/enemy/Enemy.tscn");
 
-
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
