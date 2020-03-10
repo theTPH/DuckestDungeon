@@ -144,8 +144,8 @@ func _voting_system(messsage_vote):
 	"Write !option2 to spend 10 coins and vote for: ", message_vote.option2, "\n"))
 	var voting_timer = Timer.new()
 	add_child(voting_timer)
+	voting_timer.connect("timeout", self, "_voting_results", [message_vote])
 	voting_timer.set_wait_time(60.0)
-	timer.connect("timeout", self, "_voting_results", [message_vote])
 	voting_timer.set_one_shot(true) # only one countdown
 	voting_timer.start()
 	
