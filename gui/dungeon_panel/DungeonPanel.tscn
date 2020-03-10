@@ -1,0 +1,39 @@
+[gd_scene format=2]
+
+[node name="DungeonPanel" type="Control"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -317.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_top = 0.987
+anchor_right = 0.999
+anchor_bottom = 0.987
+margin_top = -303.009
+margin_right = 0.922852
+margin_bottom = -0.00900269
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CombatGui" type="MarginContainer" parent="HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 303.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/CombatGui"]
+margin_right = 600.0
+margin_bottom = 303.0
+size_flags_horizontal = 3
+
+[node name="AttackBtn" type="Button" parent="HBoxContainer/CombatGui/VBoxContainer"]
+margin_right = 600.0
+margin_bottom = 20.0
+
+[node name="SpecialBtn" type="Button" parent="HBoxContainer/CombatGui/VBoxContainer"]
+margin_top = 24.0
+margin_right = 600.0
+margin_bottom = 44.0

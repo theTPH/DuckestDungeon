@@ -63,9 +63,9 @@
   <ItemGroup>
     <Compile Include="character\Character.cs" />
     <Compile Include="character\enemy\Enemy.cs" />
-    <Compile Include="character\enemy\KinematicBody2D.cs" />
     <Compile Include="character\player\KinematicBody2D.cs" />
     <Compile Include="character\player\Player.cs" />
+    <Compile Include="combat\TurnQueue.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="botapi/WebSocketImpl.cs" />
     <Compile Include="botapi/MessageCoins.cs" />

@@ -21,6 +21,32 @@ public class Player : Character
         ExperienceRequired = xpReq;
     }
 
+    private Player()
+    {
+
+    }
+
+    public int getAgility()
+    {
+        return Agility;
+    }
+
+    public int getStrength()
+    {
+        return Strength;
+    }
+
+    public int getMaxHp()
+    {
+        return MaxHp;
+    }
+
+    public int setMaxHp(int hp)
+    {
+        MaxHp = hp;
+        return MaxHp;
+    }
+
     public int randomNumber(int min, int max)
     {
         Random random = new Random();
@@ -104,7 +130,7 @@ public class Player : Character
 
     public override void _Ready()
     {
-        
+        base._Ready();
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.

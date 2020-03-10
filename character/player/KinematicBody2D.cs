@@ -7,8 +7,8 @@ public class KinematicBody2D : Godot.KinematicBody2D
     public int speed = 800;
     public float acceleration = 0.69f;
     public float friction = 0.1f;
-    public Vector2 velocity = new Vector2();
-    public const int GRAVITY = 100;
+    private Vector2 velocity = new Vector2();
+    // private const int GRAVITY = 100;
 
     // animation
     public AnimatedSprite mySprite;
@@ -44,7 +44,7 @@ public class KinematicBody2D : Godot.KinematicBody2D
             velocity.x = Mathf.Lerp(velocity.x, 0, friction);
         }
         
-        velocity.y += GRAVITY;
+        // velocity.y += GRAVITY;
     }
 
     public override void _PhysicsProcess(float delta)
