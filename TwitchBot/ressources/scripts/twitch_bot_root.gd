@@ -1,10 +1,13 @@
 extends Control 
 
-#variables for configuration and tweaking
 const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
 
+#global variables
+#variables for configuration and tweaking
 onready var twicil = get_node("TwiCIL")
 onready var userlist : Array = []
+onready var votinglist1 : Array = []
+onready var votinglist2 : Array = []
 onready var timer = null
 onready var earnable_coins = 10 # defines the amount of coins a user can earn every tick
 onready var tick_time = 10000 # defines the time every tick takes in milisecons
@@ -22,8 +25,6 @@ func _ready():
 	userlist.append(user_dict)
 	db_connect.setup_coin_table() #sets up the coin database
 	ws.set_root(self)
-	
-
 	
 func _on_button_connect_pressed():
 	var config = File.new()
@@ -79,11 +80,15 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 	twicil.commands.add("!current coins", self, "_command_current_coins", 0)
 	twicil.commands.add("!show commands", self, "_command_show_commands", 0)
 	twicil.commands.add("!send xp", self, "_command_send_xp", 1)
+	twicil.commands.add("!option 1", self, "_command_option1", 0)
+	twicil.commands.add("!option 2", self, "_command_option2", 0)
 	
 	# Add aliases here:
 	twicil.commands.add_aliases("!current coins", ["!currentcoins","!my coins", "!mycoins"])
 	twicil.commands.add_aliases("!show commands", ["!showcommands","!commands","!help"])
 	twicil.commands.add_aliases("!send xp", ["!sendxp", "!givexp"])
+	twicil.commands.add_aliases("!option 1", ["!option1"])
+	twicil.commands.add_aliases("!option 2", ["!option2"])
 	
 	twicil.send_message("Hi im online")
 	
@@ -135,8 +140,38 @@ func _earn_coins_viewing_time():
 
 func _voting_system(messsage_vote):
 	twicil.send_message(str("Hey my freinds you now have to opportunity to vote how the adventure should continue\n",
-	"Write !option1 to spend 10 coins and vote for: ", message_vote.option1,
-	"Write !option2 to spend 10 coins and vote for: ", message_vote.option2))
+	"Write !option1 to spend 10 coins and vote for: ", message_vote.option1, "\n",
+	"Write !option2 to spend 10 coins and vote for: ", message_vote.option2, "\n"))
+	var voting_timer = Timer.new()
+	voting_timer.set_wait_time(30.0)
+	voting_timer.set_one_shot(true) # only one countdown
+	voting_timer.start()
+	if voting_timer.time_left == 0:
+		var option_1_votes = votinglist1.size()
+		var option_2_votes = votinglist2.size()
+		
+		if option_1_votes > option_2_votes:
+			twicil.send_message("Option 1 won!")
+			message_vote.option1Chosen = true
+		elif option_2_votes > option_1_votes:
+			twicil.send_message("option 2 won!")
+			message_vote.option1Chosen = false
+		else:
+			twicil.send_message("It's a tie! Random Option will be chosen.")
+			var rand = floor(rand_range(0,1)) #random int 0 or 1
+			if rand == 0:
+				twicil.send_message("Option 1 was chosen at random!")
+				message_vote.option1Chosen = true
+			else:
+				twicil.send_message("Option 2 was chosen at random!")
+				message_vote.option1Chosen = false
+		websocket.send(message_vote)
+	elif voting_timer.time_left == 15:
+		twicil.send_message("15 seconds left to vote!")
+	votinglist1.clear()
+	votinglist2.clear()
+	
+	
 
 #Bot command functions
 func _command_current_coins(params):
@@ -151,9 +186,11 @@ func _command_current_coins(params):
 
 func _command_show_commands(params):
 	var user = params[0]
-	twicil.send_whisper(user, str("You can use the following commands:\n",
+	twicil.send_message(str("You can use the following commands:\n",
 						"!mycoins -> shows your current coin balance.\n",
-						"!sendxp {amount} -> You spend {amount} of your coins to git xp to Duckest Dungeon. \n"))
+						"!sendxp {amount} -> You spend {amount} of your coins to git xp to Duckest Dungeon. \n",
+						"!option1 -> You spend 10 coins to vote for option 1 during vote.\n",
+						"!option2 -> You spend 10 coins to vote for option 2 during vote. \n"))
 	pass
 
 func _command_send_xp(params):
@@ -173,3 +210,23 @@ func _command_send_xp(params):
 		twicil.send_message(str(object.user, " used ", object.coins_used, " of his coins to donate ", object.xp, " !"))
 	else:
 		twicil.send_whisper(user, "You dont have enaugh coins!")
+
+func _command_option1(params):
+	var user = params[0]
+	var coins = database_connection.get_coins(user)
+	if coins >= 10:
+		database_connection.remove_coins(user, 10)
+		twicil.send_whisper(user, "You voted for option 1!")
+		votinglist1.append(user)
+	else:
+		twicil.send_whisper(user, "Sorry you dont have enaugh coins to vote :( You need at least 10 coins.")
+
+func _command_option2(params):
+	var user = params[0]
+	var coins = database_connection.get_coins(user)
+	if coins >= 10:
+		database_connection.remove_coins(user, 10)
+		twicil.send_whisper(user, "You voted for option 2!")
+		votinglist2.append(user)
+	else:
+		twicil.send_whisper(user, "Sorry you dont have enaugh coins to vote :( You need at least 10 coins.")
