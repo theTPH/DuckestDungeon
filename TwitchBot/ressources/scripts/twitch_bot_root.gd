@@ -150,7 +150,6 @@ func _voting_system(messsage_vote):
 	voting_timer.start()
 	
 func _voting_results(message_vote):
-	#test
 	var option_1_votes = votinglist1.size()
 	var option_2_votes = votinglist2.size()
 		
