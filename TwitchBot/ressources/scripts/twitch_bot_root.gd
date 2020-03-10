@@ -8,6 +8,8 @@ onready var twicil = get_node("TwiCIL")
 onready var userlist : Array = []
 onready var votinglist1 : Array = []
 onready var votinglist2 : Array = []
+onready var coins_used_for_option_1 = 0
+onready var coins_used_for_option_2 = 0
 onready var timer = null
 onready var earnable_coins = 10 # defines the amount of coins a user can earn every tick
 onready var tick_time = 10000 # defines the time every tick takes in milisecons
@@ -80,8 +82,8 @@ func _setup_twicil(bot_nik, oauth_token, client_id, channel_name):
 	twicil.commands.add("!current coins", self, "_command_current_coins", 0)
 	twicil.commands.add("!show commands", self, "_command_show_commands", 0)
 	twicil.commands.add("!send xp", self, "_command_send_xp", 1)
-	twicil.commands.add("!option 1", self, "_command_option1", 0)
-	twicil.commands.add("!option 2", self, "_command_option2", 0)
+	twicil.commands.add("!option 1", self, "_command_option1", 1)
+	twicil.commands.add("!option 2", self, "_command_option2", 1)
 	
 	# Add aliases here:
 	twicil.commands.add_aliases("!current coins", ["!currentcoins","!my coins", "!mycoins"])
@@ -138,25 +140,23 @@ func _earn_coins_viewing_time():
 			db_connect.add_coins(username, earnable_coins)
 			twicil.send_whisper(username, str("GZ you earned ", earnable_coins, " coins for watching this stream!"))
 
-func _voting_system(messsage_vote):
+func _initialise_voting_system(messsage_vote):
 	twicil.send_message(str("Hey my freinds you now have to opportunity to vote how the adventure should continue\n",
-	"Write !option1 to spend 10 coins and vote for: ", message_vote.option1, "\n",
-	"Write !option2 to spend 10 coins and vote for: ", message_vote.option2, "\n"))
+	"Write !option1 {amount} to spend {amount} coins and vote for: ", message_vote.option1, "\n",
+	"Write !option2 {amount} to spend {amount} coins and vote for: ", message_vote.option2, "\n"))
 	var voting_timer = Timer.new()
 	add_child(voting_timer)
-	voting_timer.set_wait_time(20.0)
+	voting_timer.set_wait_time(30.0)
 	voting_timer.connect("timeout", self, "_voting_results", [message_vote])
 	voting_timer.set_one_shot(true) # only one countdown
 	voting_timer.start()
 	
 func _voting_results(message_vote):
-	var option_1_votes = votinglist1.size()
-	var option_2_votes = votinglist2.size()
 		
-	if option_1_votes > option_2_votes:
+	if coins_used_for_option_1 > coins_used_for_option_2:
 		twicil.send_message("Option 1 won!")
 		message_vote.option1Chosen = true
-	elif option_2_votes > option_1_votes:
+	elif coins_used_for_option_2 > coins_used_for_option_1:
 		twicil.send_message("option 2 won!")
 		message_vote.option1Chosen = false
 	else:
@@ -171,6 +171,8 @@ func _voting_results(message_vote):
 	websocket.send(message_vote)
 	votinglist1.clear()
 	votinglist2.clear()
+	coins_used_for_option_1 = 0
+	coins_used_for_option_2 = 0
 
 #Bot command functions
 func _command_current_coins(params):
@@ -212,20 +214,44 @@ func _command_send_xp(params):
 
 func _command_option1(params):
 	var user = params[0]
-	var coins = database_connection.get_coins(user)
-	if coins >= 10:
-		database_connection.remove_coins(user, 10)
-		twicil.send_whisper(user, "You voted for option 1!")
-		votinglist1.append(user)
+	var coins_used = params[1]
+	var current_coins = database_connection.get_coins(user)
+	var user_alredy_voted = false
+	
+	if current_coins >= coins_used:
+		for user_entry in votinglist1:
+			if user_entry == user:
+				user_alredy_voted = true
+		for user_entry in votinglist2:
+			if user_entry == user:
+				user_alredy_voted = true
+				
+		if user_alredy_voted == false:
+			database_connection.remove_coins(user, coins_used)
+			twicil.send_whisper(user, "You voted for option 1!")
+			votinglist1.append(user)
+			coins_used_for_option_1 = coins_used_for_option_1 + coins_used
 	else:
-		twicil.send_whisper(user, "Sorry you dont have enaugh coins to vote :( You need at least 10 coins.")
+		twicil.send_whisper(user, "Sorry you dont have the amount of coins you wanted to use.")
 
 func _command_option2(params):
 	var user = params[0]
-	var coins = database_connection.get_coins(user)
-	if coins >= 10:
-		database_connection.remove_coins(user, 10)
-		twicil.send_whisper(user, "You voted for option 2!")
-		votinglist2.append(user)
+	var coins_used = params[1]
+	var current_coins = database_connection.get_coins(user)
+	var user_alredy_voted = false
+	
+	if current_coins >= coins_used:
+		for user_entry in votinglist1:
+			if user_entry == user:
+				user_alredy_voted = true
+		for user_entry in votinglist2:
+			if user_entry == user:
+				user_alredy_voted = true
+				
+		if user_alredy_voted == false:
+			database_connection.remove_coins(user, coins_used)
+			twicil.send_whisper(user, "You voted for option 2!")
+			votinglist2.append(user)
+			coins_used_for_option_2 = coins_used_for_option_2 + coins_used
 	else:
-		twicil.send_whisper(user, "Sorry you dont have enaugh coins to vote :( You need at least 10 coins.")
+		twicil.send_whisper(user, "Sorry you dont have the amount of coins you wanted to use.")

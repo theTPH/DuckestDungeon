@@ -64,7 +64,7 @@ func _on_data(id):
 			m = message_coins.fromJson(arr[1])
 		"message_vote":
 			m = message_vote.fromJson(arr[1])
-			root._voting_system(m)
+			root._initialise_voting_system(m)
 			
 		_:
 			print("Could not parse Message Object: " + pkt.get_string_from_utf8())
