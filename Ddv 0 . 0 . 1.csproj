@@ -61,6 +61,11 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="character\Character.cs" />
+    <Compile Include="character\enemy\Enemy.cs" />
+    <Compile Include="character\enemy\KinematicBody2D.cs" />
+    <Compile Include="character\player\KinematicBody2D.cs" />
+    <Compile Include="character\player\Player.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="botapi/WebSocketImpl.cs" />
     <Compile Include="botapi/MessageCoins.cs" />
@@ -85,6 +90,7 @@
     <Compile Include="logging\GodotAppender.cs" />
     <Compile Include="logging\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="scenes\dungeon\rooms\Room.cs" />
   </ItemGroup>
   <ItemGroup>
     <!-- Nuget packages (https://www.nuget.org/) are used. -->

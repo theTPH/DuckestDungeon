@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://character/Character.cs" type="Script" id=1]
+
+[node name="Character" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="KinematicBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]

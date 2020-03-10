@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/dungeon/plattform_dummy.png" type="Texture" id=1]
+[ext_resource path="res://scenes/dungeon/rooms/Room.cs" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1000, 25 )
 
 [node name="Room" type="Node2D"]
+script = ExtResource( 2 )
 
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2( 993.625, 737.32 )
