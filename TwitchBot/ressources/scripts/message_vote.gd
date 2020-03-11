@@ -1,10 +1,13 @@
 extends Node
+#class for data serialization 
 
 var option1;
 var option2;
 var option1Chosen;
 
 func toJson():
+#parses the class to a jason 
+#returns json: the class as json
 	var dict = {
 		"option1": option1,
 		"option2" : option2,
@@ -15,6 +18,8 @@ func toJson():
 
 
 static func fromJson(text):
+#parses json  to dictionary
+#returns m: the class as dictionary
 	var dict = parse_json(text)
 	if (typeof(dict) != TYPE_DICTIONARY):
 		return null

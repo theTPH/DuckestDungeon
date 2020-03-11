@@ -5,8 +5,10 @@ var user;
 var xp;
 var coins_used;
 
-# der JSON-Serializer funktioniert nur sehr begrenzt ...
+# JSON serializer from godot doesn't work very well
 func toJson():
+#parses the class to a jason 
+#returns json: the class as json
 	var dict = {
 		"user": user,
 		"xp" : xp,
@@ -17,6 +19,8 @@ func toJson():
 
 
 static func fromJson(text):
+#parses json  to dictionary
+#returns m: the class as dictionary
 	var dict = parse_json(text)
 	if (typeof(dict) != TYPE_DICTIONARY):
 		return null
