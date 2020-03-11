@@ -23,6 +23,7 @@ public class WebSocketImpl : WebSocket
 			{
 				case "message_coins":
 					MessageCoins messageCoins = JsonConvert.DeserializeObject<MessageCoins>(msg[1]);
+					Global.GlobalSingleton.OnXpSent(messageCoins);
 				break;
 				case "message_vote":
 					MessageVote messageVote = JsonConvert.DeserializeObject<MessageVote>(msg[1]);

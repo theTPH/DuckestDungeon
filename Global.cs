@@ -28,6 +28,7 @@ public class Global : Node
 
     // database
     public static ISession connection;
+    public static Global GlobalSingleton { get; private set; } = null;
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -35,6 +36,7 @@ public class Global : Node
         SaveGameLoaded = false;
         TwitchMode = false;
         SwitchRoomMode = false;
+        GlobalSingleton = this;
 
         // initialize database
         InitHibernate();
@@ -215,6 +217,14 @@ public class Global : Node
         Map map = GetMapNode();
         SwitchRoomMode = true;
         map.ChangePlayerPosition(true);
+    }
+
+    // called when viewer buys xp with coins
+    public void OnXpSent(MessageCoins coins)
+    {
+        this.PlayerAttributes.Xp += coins.xp;
+        // This could have been a great idea
+        //GetNode<MenuBar>("").Refresh();
     }
 
     public Map GetMapNode()

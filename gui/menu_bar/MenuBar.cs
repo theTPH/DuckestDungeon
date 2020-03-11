@@ -12,6 +12,11 @@ public class MenuBar : Control
     {
         Global = GetNode<Global>("/root/Global");
         ExpContainer = GetNode<ExpContainer>("MarginContainer/TextureRect/MarginContainer/GridContainer/ExpContainer");
+        Refresh();
+    }
+
+    public void Refresh()
+    {
         ExpContainer.SetExpContainerValues(Global.PlayerAttributes.Level, Global.PlayerAttributes.Xp, Global.PlayerAttributes.XpToLevelUp);
     }
 
