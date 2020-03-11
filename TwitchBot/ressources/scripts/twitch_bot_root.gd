@@ -214,7 +214,7 @@ func _command_send_xp(params):
 
 func _command_option1(params):
 	var user = params[0]
-	var coins_used = params[1]
+	var coins_used = int(params[1])
 	var current_coins = database_connection.get_coins(user)
 	var user_alredy_voted = false
 	
@@ -236,7 +236,7 @@ func _command_option1(params):
 
 func _command_option2(params):
 	var user = params[0]
-	var coins_used = params[1]
+	var coins_used = int(params[1])
 	var current_coins = database_connection.get_coins(user)
 	var user_alredy_voted = false
 	
