@@ -13,7 +13,7 @@
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 2000, 25 )
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 120, 180 )
 
 [node name="Floor" type="Node2D"]
@@ -61,7 +61,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WarpZones/Start"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="WarpZones/Start"]
 position = Vector2( 3.05176e-05, -3.80002 )
@@ -76,7 +76,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WarpZones/End"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="WarpZones/End"]
 position = Vector2( 2.67029e-05, -4.49999 )

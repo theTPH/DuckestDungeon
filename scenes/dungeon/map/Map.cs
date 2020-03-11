@@ -9,8 +9,10 @@ public class Map : Node2D
     
     public enum Orientation
     {        
-        LeftRight,
-        UpDown
+        Left,
+        Right,
+        Up,
+        Down
     }
     
     private Orientation myMovement;
@@ -27,7 +29,7 @@ public class Map : Node2D
         RoomId = 1;
         myTileSize = 64;
         PlayerLocation = GetNode<Sprite>("PlayerLocation");
-        myMovement = Orientation.LeftRight;
+        myMovement = Orientation.Right;
         Global.SwitchRoomMode = true;
     }
 
@@ -41,8 +43,9 @@ public class Map : Node2D
             && (position.x-PlayerLocation.Position.x) <= 7 * myTileSize)
             {
                 PlayerLocation.Position += Vector2.Right * myTileSize * 2;
-                myMovement = Orientation.LeftRight;
+                myMovement = Orientation.Right;
                 GD.Print("right");
+                ChangeToFloorScene();
             }
             // move playerdot left
             else if (position.x < PlayerLocation.Position.x
@@ -50,8 +53,9 @@ public class Map : Node2D
             && (PlayerLocation.Position.x - position.x) <= 7 * myTileSize)
             {
                 PlayerLocation.Position += Vector2.Left * myTileSize * 2;
-                myMovement = Orientation.LeftRight;
+                myMovement = Orientation.Left;
                 GD.Print("left");
+                ChangeToFloorScene();
             }
             // move playerdot up
             else if (position.x == PlayerLocation.Position.x
@@ -59,8 +63,9 @@ public class Map : Node2D
             && (position.y-PlayerLocation.Position.y) <= 7 * myTileSize)
             {
                 PlayerLocation.Position += Vector2.Up * myTileSize * 2;
-                myMovement = Orientation.UpDown;
+                myMovement = Orientation.Up;
                 GD.Print("up");
+                ChangeToFloorScene();
             }
             // move playerdot down
             else if (position.x == PlayerLocation.Position.x
@@ -68,45 +73,46 @@ public class Map : Node2D
             && (PlayerLocation.Position.y - position.y) <= 7 * myTileSize)
             {
                 PlayerLocation.Position += Vector2.Down * myTileSize * 2;
-                myMovement = Orientation.UpDown;
+                myMovement = Orientation.Down;
                 GD.Print("down");
+                ChangeToFloorScene();
             }
-
-            Global.SwitchRoomMode = false;
-            Global.ChangeScene(null, WORLD_FLOOR_SCENE);
         }
     }
 
-    public void ChangePlayerPosition(bool exitedRight)
+    public void ChangePlayerPosition(bool exitedRight = false)
     {
-        int modifier = 1;
+        // the player position on map has to be changed on room mode and orientation
+        int modifier = Global.SwitchRoomMode ? 2 : 1;
 
-        if (Global.SwitchRoomMode)
+        if (!exitedRight)
         {
-            modifier = Global.RoomSpawnLeft == true ? 2 : -2;
+            modifier *= -1;
         }
-        
-        if (exitedRight)
-        {
-            if (myMovement == Orientation.LeftRight)
+
+
+        switch (myMovement)
             {
-                PlayerLocation.Position += Vector2.Right * myTileSize * modifier;
-            }
-            else
-            {
-                PlayerLocation.Position += Vector2.Down * myTileSize * modifier;
-            }
-        }
-        else
-        {
-           if (myMovement == Orientation.LeftRight)
-            {
-                PlayerLocation.Position += Vector2.Left * myTileSize * modifier;
-            }
-            else
-            {
-                PlayerLocation.Position += Vector2.Up * myTileSize * modifier;
+                case Orientation.Right:
+                    PlayerLocation.Position += Vector2.Right * myTileSize * modifier;
+                    break;
+                case Orientation.Left:
+                    PlayerLocation.Position += Vector2.Left * myTileSize * modifier;
+                    break;
+                case Orientation.Up:
+                    PlayerLocation.Position += Vector2.Up * myTileSize * modifier;
+                    break;
+                case Orientation.Down:
+                    PlayerLocation.Position += Vector2.Down * myTileSize * modifier;
+                    break;
+                default:
+                    break;
             }    
-        }
+    }
+
+    public void ChangeToFloorScene()
+    {
+        Global.SwitchRoomMode = false;
+        Global.ChangeScene(null, WORLD_FLOOR_SCENE);
     }
 }

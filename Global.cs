@@ -25,7 +25,6 @@ public class Global : Node
     public bool SaveGameLoaded;
     public bool TwitchMode;
     public bool SwitchRoomMode;
-    public bool RoomSpawnLeft;
 
     // database
     public static ISession connection;
@@ -36,7 +35,6 @@ public class Global : Node
         SaveGameLoaded = false;
         TwitchMode = false;
         SwitchRoomMode = false;
-        RoomSpawnLeft = true;
 
         // initialize database
         InitHibernate();
@@ -189,7 +187,7 @@ public class Global : Node
             try
             {
                 // get Map node
-                Map map = Gui.GetNode<Map>("DungeonMenu/MarginContainer/HBoxContainer/Minimap/MarginContainer/MapContainer/MapView/Map");
+                Map map = GetMapNode();
                 map.ChangePlayerPosition(exitedRight);
             }
             catch (Exception e)
@@ -201,25 +199,39 @@ public class Global : Node
 
     public void OnStartEntered()
     {
-        RoomSpawnLeft = false;
         ChangeScene(null, WORLD_ROOM_PATH);
 
         // get Map node
-        Map map = Gui.GetNode<Map>("DungeonMenu/MarginContainer/HBoxContainer/Minimap/MarginContainer/MapContainer/MapView/Map");
+        Map map = GetMapNode();
         SwitchRoomMode = true;
         map.ChangePlayerPosition(false);
     }
 
     public void OnEndEntered()
     {
-        RoomSpawnLeft = true;
         ChangeScene(null, WORLD_ROOM_PATH);
 
         // get Map node
-        Map map = Gui.GetNode<Map>("DungeonMenu/MarginContainer/HBoxContainer/Minimap/MarginContainer/MapContainer/MapView/Map");
+        Map map = GetMapNode();
         SwitchRoomMode = true;
         map.ChangePlayerPosition(true);
     }
 
+    public Map GetMapNode()
+    {
+        Map map = null;
+        
+        try
+        {
+            // get Map node
+            map = Gui.GetNode<Map>("DungeonMenu/MarginContainer/HBoxContainer/Minimap/MarginContainer/MapContainer/MapView/Map");
+        }
+        catch (Exception e)
+        {
+           Log.log.Error("Error on getting Map scene", e);
+        }
+
+        return map;
+    }
     #endregion
 }
