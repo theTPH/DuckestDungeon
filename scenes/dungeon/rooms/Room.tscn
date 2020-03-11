@@ -23,14 +23,17 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 155.452, 703.234 )
+position = Vector2( 295.57, 701.874 )
 
-[node name="TestLabel" type="Label" parent="."]
-margin_left = 609.093
-margin_top = 410.634
-margin_right = 686.093
-margin_bottom = 424.634
-text = "START"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2( -0.615578, 320.193 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WallLeft"]
+polygon = PoolVector2Array( -24.9343, -320.367, -24.3356, 401.11, 43.4441, 400.823, 44.3413, -319.42 )
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2( -0.615578, 320.193 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WallRight"]
+position = Vector2( 1901.61, 0 )
+polygon = PoolVector2Array( -24.9343, -320.367, -24.3356, 401.11, 43.4441, 400.823, 44.3413, -319.42 )
