@@ -1,10 +1,12 @@
 using System;
 using WebSocketSharp;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 public class WebSocketImpl : WebSocket
 {
 	private static WebSocketImpl instance = null;
+	private SortedDictionary<int, Action<MessageVote>> voteMap = new SortedDictionary<int, Action<MessageVote>>();
 	public static WebSocketImpl getInstance()
 	{
 		if (instance == null)
@@ -24,6 +26,15 @@ public class WebSocketImpl : WebSocket
 				break;
 				case "message_vote":
 					MessageVote messageVote = JsonConvert.DeserializeObject<MessageVote>(msg[1]);
+
+					int hash = (messageVote.option1 + messageVote.option2).GetHashCode();
+					if (voteMap.ContainsKey(hash))
+					{
+						voteMap[hash].Invoke(messageVote);
+						voteMap.Remove(hash);
+					}
+					else
+						logging.Logger.logger.Warn("Konnte kein callback fuer vote " + messageVote.ToString() + " finden");
 				break;
 				default:
 					logging.Logger.logger.Warn("Could not parse Message Object: " + e.Data);
@@ -43,7 +54,7 @@ public class WebSocketImpl : WebSocket
 
 	}
 
-	void send(Object m)
+	private void send(Object m)
 	{
 		string prefix = "";
 		if (m is MessageCoins)
@@ -54,5 +65,12 @@ public class WebSocketImpl : WebSocket
 		var json = prefix + "##" + JsonConvert.SerializeObject(m);
 		logging.Logger.logger.Info("Sending Message: " + json);
 		this.Send(json);
+	}
+
+	public void send(MessageVote vote, Action<MessageVote> callback)
+	{
+		int hash = (vote.option1 + vote.option2).GetHashCode();
+		this.voteMap[hash] = callback;
+		this.send(vote);
 	}
 }
