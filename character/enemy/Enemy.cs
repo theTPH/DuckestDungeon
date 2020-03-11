@@ -5,7 +5,7 @@ public class Enemy : Character
 {
     // private const int GRAVITY = 100;
 
-    private Enemy() : base(25, 2, 2)
+    public Enemy() : base(25, 2, 2)
     {
 
     }
@@ -15,6 +15,13 @@ public class Enemy : Character
     {
 
     }
+
+    public void init(int hp, int str, int agi)
+    {
+        MaxHp = hp;
+        Strength = str;
+        Agility = agi;
+    }   
 
     public int getAgility()
     {

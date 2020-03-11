@@ -12,8 +12,9 @@ public class Player : Character
     public double ExperienceRequired = 100;
 
 
-    private Player(string name, int lvl, double xp, double xpTotal, double xpReq) : base(50, 5, 5)
+    public Player(string name, int lvl, double xp, double xpTotal, double xpReq) : base(50, 5, 5)
     {
+        GD.Print("flag_player");
         PlayerName = name;
         Level = lvl;
         Experience = xp;
@@ -23,7 +24,20 @@ public class Player : Character
 
     private Player()
     {
+        GD.Print("constr.");
+    }
 
+    public void init(int hp, int str, int agi,
+            string name, int lvl, int xp, int xpTotal, int xpReq)
+    {
+        MaxHp = hp;
+        Strength = str;
+        Agility = agi;
+        PlayerName = name;
+        Level = lvl;
+        Experience = xp;
+        ExperienceTotal = xpTotal;
+        ExperienceRequired = xpReq;
     }
 
     public int getAgility()

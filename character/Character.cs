@@ -3,7 +3,7 @@ using System;
 
 public class Character : Node2D
 {
-    public int MaxHp = 0;
+    public int MaxHp = 100;
     public int Strength = 0;
     public int Agility = 0;
 
@@ -21,7 +21,7 @@ public class Character : Node2D
 
     public Character()
     {
-
+        
     }
 
     // Called when the node enters the scene tree for the first time.
