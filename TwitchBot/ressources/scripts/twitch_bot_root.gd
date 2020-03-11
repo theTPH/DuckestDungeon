@@ -231,6 +231,8 @@ func _command_option1(params):
 			twicil.send_whisper(user, "You voted for option 1!")
 			votinglist1.append(user)
 			coins_used_for_option_1 = coins_used_for_option_1 + coins_used
+		else:
+			twicil.send_whisper(user, "You alredy voted for an option.")
 	else:
 		twicil.send_whisper(user, "Sorry you dont have the amount of coins you wanted to use.")
 
@@ -253,5 +255,7 @@ func _command_option2(params):
 			twicil.send_whisper(user, "You voted for option 2!")
 			votinglist2.append(user)
 			coins_used_for_option_2 = coins_used_for_option_2 + coins_used
+		else:
+			twicil.send_whisper(user, "You alredy voted for an option.")
 	else:
 		twicil.send_whisper(user, "Sorry you dont have the amount of coins you wanted to use.")
