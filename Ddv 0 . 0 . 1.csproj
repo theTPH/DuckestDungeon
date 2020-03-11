@@ -96,6 +96,7 @@
     <Compile Include="scenes\dungeon\floors\SecChange.cs" />
     <Compile Include="scenes\dungeon\floors\Start.cs" />
     <Compile Include="scenes\dungeon\map\Map.cs" />
+    <Compile Include="scenes\dungeon\test.cs" />
     <Compile Include="scenes\tavern\Tavern.cs" />
   </ItemGroup>
   <ItemGroup>
