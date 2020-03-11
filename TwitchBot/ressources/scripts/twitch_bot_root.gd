@@ -240,7 +240,7 @@ func _command_option1(params):
 # param params[0]: string - always the user that sends the command
 # param params[1]: string - amount of coins the user whishes to spend
 	var user = params[0]
-	var coins_used = params[1]
+	var coins_used = int(params[1])
 	var current_coins = database_connection.get_coins(user)
 	var user_alredy_voted = false
 	
@@ -258,6 +258,8 @@ func _command_option1(params):
 			twicil.send_whisper(user, "You voted for option 1!")
 			votinglist1.append(user)
 			coins_used_for_option_1 = coins_used_for_option_1 + coins_used
+		else:
+			twicil.send_whisper(user, "You alredy voted for an option.")
 	else:
 		twicil.send_whisper(user, "Sorry you dont have the amount of coins you wanted to use.")
 
@@ -266,7 +268,7 @@ func _command_option2(params):
 # param params[0]: string - always the user that sends the command
 # param params[1]: string - amount of coins the user whishes to spend
 	var user = params[0]
-	var coins_used = params[1]
+	var coins_used = int(params[1])
 	var current_coins = database_connection.get_coins(user)
 	var user_alredy_voted = false
 	
@@ -284,5 +286,7 @@ func _command_option2(params):
 			twicil.send_whisper(user, "You voted for option 2!")
 			votinglist2.append(user)
 			coins_used_for_option_2 = coins_used_for_option_2 + coins_used
+		else:
+			twicil.send_whisper(user, "You alredy voted for an option.")
 	else:
 		twicil.send_whisper(user, "Sorry you dont have the amount of coins you wanted to use.")
