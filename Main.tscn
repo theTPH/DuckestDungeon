@@ -6,7 +6,9 @@
 
 [node name="World" type="Node2D" parent="."]
 
-[node name="GUI" type="Control" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GUI" type="Control" parent="CanvasLayer"]
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false

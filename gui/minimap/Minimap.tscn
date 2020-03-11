@@ -1,22 +1,23 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://gui/minimap/frame_pattern.png" type="Texture" id=1]
 [ext_resource path="res://gui/minimap/frame.png" type="Texture" id=2]
 [ext_resource path="res://scenes/dungeon/map/Map.tscn" type="PackedScene" id=3]
+[ext_resource path="res://gui/minimap/Camera2D.cs" type="Script" id=4]
+[ext_resource path="res://gui/minimap/Minimap.cs" type="Script" id=5]
+[ext_resource path="res://gui/minimap/MapContainer.cs" type="Script" id=6]
 
 [node name="Minimap" type="MarginContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 13.0
-margin_top = 14.0
-margin_right = -1597.0
-margin_bottom = -826.0
+margin_right = 310.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 310, 240 )
+size_flags_horizontal = 2
 custom_constants/margin_right = 5
 custom_constants/margin_top = 5
 custom_constants/margin_left = 5
 custom_constants/margin_bottom = 5
+script = ExtResource( 5 )
 __meta__ = {
-"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
@@ -56,14 +57,23 @@ margin_right = 292.0
 margin_bottom = 222.0
 size_flags_horizontal = 3
 stretch = true
+script = ExtResource( 6 )
 
 [node name="MapView" type="Viewport" parent="MarginContainer/MapContainer"]
 size = Vector2( 284, 214 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 3
+physics_object_picking = true
 
 [node name="Camera2D" type="Camera2D" parent="MarginContainer/MapContainer/MapView"]
 current = true
+zoom = Vector2( 2.8, 2.8 )
+limit_left = 0
+limit_top = 0
+limit_right = 1800
+limit_bottom = 832
+script = ExtResource( 4 )
 
 [node name="Map" parent="MarginContainer/MapContainer/MapView" instance=ExtResource( 3 )]
+[connection signal="gui_input" from="MarginContainer/MapContainer" to="MarginContainer/MapContainer" method="OnMapContainerGuiInput"]

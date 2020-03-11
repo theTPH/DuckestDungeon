@@ -19,10 +19,13 @@ public class Global : Node
     public Node World;
     public Node CurrentWorldScene;
     public const string WORLD_START_PATH = "res://scenes/startup/TitleScene.tscn";
+    public const string WORLD_ROOM_PATH = "res://scenes/dungeon/rooms/Room.tscn";
 
     public PlayerAttributes PlayerAttributes;
     public bool SaveGameLoaded;
     public bool TwitchMode;
+    public bool SwitchRoomMode;
+    public bool RoomSpawnLeft;
 
     // database
     public static ISession connection;
@@ -32,6 +35,8 @@ public class Global : Node
     {
         SaveGameLoaded = false;
         TwitchMode = false;
+        SwitchRoomMode = false;
+        RoomSpawnLeft = true;
 
         // initialize database
         InitHibernate();
@@ -39,7 +44,7 @@ public class Global : Node
 
         // get gui and world node
         Viewport root = GetTree().Root;
-        Gui = root.GetNode("Main/GUI");
+        Gui = root.GetNode("Main/CanvasLayer/GUI");
         World = root.GetNode("Main/World");
 
         // set current gui scene child
@@ -71,21 +76,21 @@ public class Global : Node
 
     public void DeferredChangeScene(string guiScenePath, string worldScenePath)
     {
-        CurrentGuiScene.Free();
-        CurrentWorldScene.Free();
+        // CurrentGuiScene.Free();
+        // CurrentWorldScene.Free();
 
         PackedScene newGuiScene = null;
         PackedScene newWorldScene = null;
 
-        // TODO assert path
-
         if (!String.IsNullOrEmpty(guiScenePath))
         {
+            CurrentGuiScene.Free();
             newGuiScene = (PackedScene)ResourceLoader.Load(guiScenePath);
         }
 
         if (!String.IsNullOrEmpty(worldScenePath))
         {
+           CurrentWorldScene.Free();
            newWorldScene = (PackedScene)ResourceLoader.Load(worldScenePath);
         }
 
@@ -93,12 +98,14 @@ public class Global : Node
         {
             CurrentGuiScene = newGuiScene.Instance();
             Gui.AddChild(CurrentGuiScene);
+            GD.Print("GUI changed");
         }
 
         if (newWorldScene != null)
         {
             CurrentWorldScene = newWorldScene.Instance();
             World.AddChild(CurrentWorldScene);
+            GD.Print("World changed");
         }
 
     }
@@ -167,6 +174,51 @@ public class Global : Node
             Log.log.Error("Error on create hibernate session", e);
         }
 
+    }
+
+    #endregion
+
+    #region Signals
+
+    public void OnSecExited(bool exitedRight)
+    {
+        if (!SwitchRoomMode)
+        {
+            GD.Print(exitedRight);
+
+            try
+            {
+                // get Map node
+                Map map = Gui.GetNode<Map>("DungeonMenu/MarginContainer/HBoxContainer/Minimap/MarginContainer/MapContainer/MapView/Map");
+                map.ChangePlayerPosition(exitedRight);
+            }
+            catch (Exception e)
+            {
+                Log.log.Error("Error on getting Map scene", e);
+            }
+        }
+    }
+
+    public void OnStartEntered()
+    {
+        RoomSpawnLeft = false;
+        ChangeScene(null, WORLD_ROOM_PATH);
+
+        // get Map node
+        Map map = Gui.GetNode<Map>("DungeonMenu/MarginContainer/HBoxContainer/Minimap/MarginContainer/MapContainer/MapView/Map");
+        SwitchRoomMode = true;
+        map.ChangePlayerPosition(false);
+    }
+
+    public void OnEndEntered()
+    {
+        RoomSpawnLeft = true;
+        ChangeScene(null, WORLD_ROOM_PATH);
+
+        // get Map node
+        Map map = Gui.GetNode<Map>("DungeonMenu/MarginContainer/HBoxContainer/Minimap/MarginContainer/MapContainer/MapView/Map");
+        SwitchRoomMode = true;
+        map.ChangePlayerPosition(true);
     }
 
     #endregion

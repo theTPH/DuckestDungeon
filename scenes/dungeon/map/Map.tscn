@@ -1,6 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/dungeon/map/dungeonMap.png" type="Texture" id=1]
+[ext_resource path="res://scenes/dungeon/map/playerloc_dot.png" type="Texture" id=2]
+[ext_resource path="res://scenes/dungeon/map/Map.cs" type="Script" id=3]
+[ext_resource path="res://gui/minimap/Room_Area.tscn" type="PackedScene" id=4]
 
 [sub_resource type="TileSet" id=1]
 0/name = "dungeonMap.png 0"
@@ -145,8 +148,68 @@
 13/z_index = 0
 
 [node name="Map" type="Node2D"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 832.0 ],
+"_edit_vertical_guides_": [ 1792.0 ]
+}
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
 format = 1
-tile_data = PoolIntArray( 65538, 1, 0, 65539, 2, 0, 65540, 3, 0, 65545, 1, 0, 65546, 2, 0, 65547, 3, 0, 65552, 1, 0, 65553, 2, 0, 65554, 3, 0, 65559, 1, 0, 65560, 2, 0, 65561, 3, 0, 131074, 6, 0, 131075, 13, 0, 131076, 4, 0, 131077, 0, 0, 131078, 0, 0, 131079, 0, 0, 131080, 0, 0, 131081, 6, 0, 131082, 5, 0, 131083, 4, 0, 131084, 0, 0, 131085, 0, 0, 131086, 0, 0, 131087, 0, 0, 131088, 6, 0, 131089, 5, 0, 131090, 4, 0, 131091, 0, 0, 131092, 0, 0, 131093, 0, 0, 131094, 0, 0, 131095, 6, 0, 131096, 5, 0, 131097, 4, 0, 196610, 9, 0, 196611, 8, 0, 196612, 7, 0, 196617, 9, 0, 196618, 8, 0, 196619, 7, 0, 196624, 9, 0, 196625, 8, 0, 196626, 7, 0, 196631, 9, 0, 196632, 8, 0, 196633, 7, 0, 262154, 10, 0, 262161, 10, 0, 262168, 10, 0, 327690, 10, 0, 327697, 10, 0, 327704, 10, 0, 393226, 10, 0, 393233, 10, 0, 393240, 10, 0, 458762, 10, 0, 458769, 10, 0, 458776, 10, 0, 524297, 1, 0, 524298, 2, 0, 524299, 3, 0, 524304, 1, 0, 524305, 2, 0, 524306, 3, 0, 524311, 1, 0, 524312, 2, 0, 524313, 3, 0, 589833, 6, 0, 589834, 5, 0, 589835, 4, 0, 589836, 0, 0, 589837, 0, 0, 589838, 0, 0, 589839, 0, 0, 589840, 6, 0, 589841, 5, 0, 589842, 4, 0, 589843, 0, 0, 589844, 0, 0, 589845, 0, 0, 589846, 0, 0, 589847, 6, 0, 589848, 5, 0, 589849, 4, 0, 655369, 9, 0, 655370, 8, 0, 655371, 7, 0, 655376, 9, 0, 655377, 8, 0, 655378, 7, 0, 655383, 9, 0, 655384, 8, 0, 655385, 7, 0 )
+tile_data = PoolIntArray( 65538, 1, 0, 65539, 2, 0, 65540, 3, 0, 65545, 1, 0, 65546, 2, 0, 65547, 3, 0, 65552, 1, 0, 65553, 2, 0, 65554, 3, 0, 65559, 1, 0, 65560, 2, 0, 65561, 3, 0, 131074, 6, 0, 131075, 5, 0, 131076, 4, 0, 131077, 0, 0, 131078, 0, 0, 131079, 0, 0, 131080, 0, 0, 131081, 6, 0, 131082, 5, 0, 131083, 4, 0, 131084, 0, 0, 131085, 0, 0, 131086, 0, 0, 131087, 0, 0, 131088, 6, 0, 131089, 5, 0, 131090, 4, 0, 131091, 0, 0, 131092, 0, 0, 131093, 0, 0, 131094, 0, 0, 131095, 6, 0, 131096, 5, 0, 131097, 4, 0, 196610, 9, 0, 196611, 8, 0, 196612, 7, 0, 196617, 9, 0, 196618, 8, 0, 196619, 7, 0, 196624, 9, 0, 196625, 8, 0, 196626, 7, 0, 196631, 9, 0, 196632, 8, 0, 196633, 7, 0, 262154, 10, 0, 262161, 10, 0, 262168, 10, 0, 327690, 10, 0, 327697, 10, 0, 327704, 10, 0, 393226, 10, 0, 393233, 10, 0, 393240, 10, 0, 458762, 10, 0, 458769, 10, 0, 458776, 10, 0, 524297, 1, 0, 524298, 2, 0, 524299, 3, 0, 524304, 1, 0, 524305, 2, 0, 524306, 3, 0, 524311, 1, 0, 524312, 2, 0, 524313, 3, 0, 589833, 6, 0, 589834, 5, 0, 589835, 4, 0, 589836, 0, 0, 589837, 0, 0, 589838, 0, 0, 589839, 0, 0, 589840, 6, 0, 589841, 5, 0, 589842, 4, 0, 589847, 6, 0, 589848, 5, 0, 589849, 4, 0, 655369, 9, 0, 655370, 8, 0, 655371, 7, 0, 655376, 9, 0, 655377, 8, 0, 655378, 7, 0, 655383, 9, 0, 655384, 8, 0, 655385, 7, 0 )
+
+[node name="PlayerLocation" type="Sprite" parent="."]
+position = Vector2( 224, 160 )
+texture = ExtResource( 2 )
+
+[node name="RoomAreas" type="Node" parent="."]
+
+[node name="Room_Area_01" parent="RoomAreas" instance=ExtResource( 4 )]
+margin_left = 224.0
+margin_top = 160.0
+margin_right = 224.0
+margin_bottom = 160.0
+
+[node name="Room_Area_02" parent="RoomAreas" instance=ExtResource( 4 )]
+margin_left = 672.0
+margin_top = 160.0
+margin_right = 672.0
+margin_bottom = 160.0
+
+[node name="Room_Area_03" parent="RoomAreas" instance=ExtResource( 4 )]
+margin_left = 672.0
+margin_top = 608.0
+margin_right = 672.0
+margin_bottom = 608.0
+
+[node name="Room_Area_04" parent="RoomAreas" instance=ExtResource( 4 )]
+margin_left = 1120.0
+margin_top = 608.0
+margin_right = 1120.0
+margin_bottom = 608.0
+
+[node name="Room_Area_05" parent="RoomAreas" instance=ExtResource( 4 )]
+margin_left = 1120.0
+margin_top = 160.0
+margin_right = 1120.0
+margin_bottom = 160.0
+
+[node name="Room_Area_06" parent="RoomAreas" instance=ExtResource( 4 )]
+margin_left = 1568.0
+margin_top = 160.0
+margin_right = 1568.0
+margin_bottom = 160.0
+
+[node name="Room_Area_07" parent="RoomAreas" instance=ExtResource( 4 )]
+margin_left = 1568.0
+margin_top = 608.0
+margin_right = 1568.0
+margin_bottom = 608.0
+[connection signal="AreaClicked" from="RoomAreas/Room_Area_01" to="." method="OnAreaClicked"]
+[connection signal="AreaClicked" from="RoomAreas/Room_Area_02" to="." method="OnAreaClicked"]
+[connection signal="AreaClicked" from="RoomAreas/Room_Area_03" to="." method="OnAreaClicked"]
+[connection signal="AreaClicked" from="RoomAreas/Room_Area_04" to="." method="OnAreaClicked"]
+[connection signal="AreaClicked" from="RoomAreas/Room_Area_05" to="." method="OnAreaClicked"]
+[connection signal="AreaClicked" from="RoomAreas/Room_Area_06" to="." method="OnAreaClicked"]
+[connection signal="AreaClicked" from="RoomAreas/Room_Area_07" to="." method="OnAreaClicked"]

@@ -1,19 +1,27 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/dungeon/plattform_dummy.png" type="Texture" id=1]
+[ext_resource path="res://character/player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://character/player/player.png" type="Texture" id=3]
+[ext_resource path="res://scenes/dungeon/floors/Floor.cs" type="Script" id=4]
+[ext_resource path="res://scenes/dungeon/floors/SecChange.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/dungeon/floors/Start.cs" type="Script" id=6]
+[ext_resource path="res://scenes/dungeon/floors/End.cs" type="Script" id=7]
 
 [sub_resource type="PhysicsMaterial" id=1]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 2000, 25 )
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 31.926, 457.421 )
-
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 120, 180 )
 
 [node name="Floor" type="Node2D"]
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 1081.22, 773.996 ],
+"_edit_vertical_guides_": [ 3815.0, 960.0, 1920.0, 2880.0 ]
+}
 
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2( 1893.82, 746.1 )
@@ -31,37 +39,23 @@ shape = SubResource( 2 )
 
 [node name="SectionChangeAreas" type="Node" parent="."]
 
-[node name="SecChange1" type="Area2D" parent="SectionChangeAreas"]
-position = Vector2( 960.783, 414.924 )
-__meta__ = {
-"_edit_group_": true
-}
+[node name="SecChange01" parent="SectionChangeAreas" instance=ExtResource( 5 )]
+Id = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SectionChangeAreas/SecChange1"]
-shape = SubResource( 3 )
+[node name="SecChange02" parent="SectionChangeAreas" instance=ExtResource( 5 )]
+position = Vector2( 1920, 414.924 )
+Id = 2
 
-[node name="SecChange2" type="Area2D" parent="SectionChangeAreas"]
-position = Vector2( 1920.44, 418.772 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SectionChangeAreas/SecChange2"]
-shape = SubResource( 3 )
-
-[node name="SecChange3" type="Area2D" parent="SectionChangeAreas"]
-position = Vector2( 2880.35, 418.772 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SectionChangeAreas/SecChange3"]
-shape = SubResource( 3 )
+[node name="SecChange03" parent="SectionChangeAreas" instance=ExtResource( 5 )]
+position = Vector2( 2880, 414.924 )
+Id = 3
 
 [node name="WarpZones" type="Node" parent="."]
 
 [node name="Start" type="Area2D" parent="WarpZones"]
 position = Vector2( 201.385, 555.032 )
+z_index = -5
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -69,11 +63,26 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WarpZones/Start"]
 shape = SubResource( 4 )
 
+[node name="Sprite" type="Sprite" parent="WarpZones/Start"]
+position = Vector2( 3.05176e-05, -3.80002 )
+scale = Vector2( 3.01875, 4.37249 )
+texture = ExtResource( 3 )
+
 [node name="End" type="Area2D" parent="WarpZones"]
 position = Vector2( 3598.18, 555.032 )
+script = ExtResource( 7 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WarpZones/End"]
 shape = SubResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="WarpZones/End"]
+position = Vector2( 2.67029e-05, -4.49999 )
+scale = Vector2( 3.02499, 4.33749 )
+z_index = -5
+texture = ExtResource( 3 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 390.913, 705.318 )
