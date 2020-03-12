@@ -68,6 +68,6 @@ public class Floor : Node2D
                 break;
         }
         
-        EventSpot.SetEvent(myEventType, eventPositionX, 680);
+        EventSpot.SetEvent(myEventType, eventPositionX, 700);
     }
 }

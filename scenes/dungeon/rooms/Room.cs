@@ -17,7 +17,6 @@ public class Room : Node2D
         myClearedButton = GetNode<Button>("DungeonClearedButton");
 
         EventSpot.SetEvent(1, 1400, 680);
-        GD.Print(Global.GetCurrentRoomId());
 
         if (Global.GetCurrentRoomId() == 7)
         {

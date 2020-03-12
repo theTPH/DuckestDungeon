@@ -29,13 +29,13 @@ public class AttributesPanel : Panel
 
     public void LoadAttributeData()
     {
-        AStr.SetPointsLabel(Global.PlayerAttributes.Str);
-        AHp.SetPointsLabel(Global.PlayerAttributes.Hp);
-        AAg.SetPointsLabel(Global.PlayerAttributes.Ag);
-        APBox.SetAttributePoints(Global.PlayerAttributes.Ap);
+        AStr.SetPointsLabel(Global.PlayerAttributes.Strength);
+        AHp.SetPointsLabel(Global.PlayerAttributes.MaxHp);
+        AAg.SetPointsLabel(Global.PlayerAttributes.Agility);
+        APBox.SetAttributePoints(Global.PlayerAttributes.AbilityPoints);
 
         // set TempAp to cover real AP for cancelling case
-        TempAp = Global.PlayerAttributes.Ap;
+        TempAp = Global.PlayerAttributes.AbilityPoints;
     }
     
     #region Signals
@@ -48,10 +48,10 @@ public class AttributesPanel : Panel
     public void OnAPEditConfirmed()
     {
         // set new player data, if edit confirmed
-        Global.PlayerAttributes.Str = AStr.GetPoints();
-        Global.PlayerAttributes.Hp = AHp.GetPoints();
-        Global.PlayerAttributes.Ag = AAg.GetPoints();
-        Global.PlayerAttributes.Ap = APBox.GetAttributePoints();
+        Global.PlayerAttributes.Strength = AStr.GetPoints();
+        Global.PlayerAttributes.MaxHp = AHp.GetPoints();
+        Global.PlayerAttributes.Agility = AAg.GetPoints();
+        Global.PlayerAttributes.AbilityPoints = APBox.GetAttributePoints();
 
         Global.SaveGame();
 
@@ -98,9 +98,9 @@ public class AttributesPanel : Panel
             AAg.PlusButton.Disabled = true;
 
             //if all points where spent, only let minus buttons of attributes enabled, that where used for spending points
-            AStr.MinusButton.Disabled = AStr.AValue != Global.PlayerAttributes.Str ? false : true;
-            AHp.MinusButton.Disabled = AHp.AValue != Global.PlayerAttributes.Hp ? false :true;
-            AAg.MinusButton.Disabled = AAg.AValue != Global.PlayerAttributes.Ag ? false : true;
+            AStr.MinusButton.Disabled = AStr.AValue != Global.PlayerAttributes.Strength ? false : true;
+            AHp.MinusButton.Disabled = AHp.AValue != Global.PlayerAttributes.MaxHp ? false :true;
+            AAg.MinusButton.Disabled = AAg.AValue != Global.PlayerAttributes.Agility ? false : true;
         }
 
         // if no AP where added to attributes since last save, disable minus buttons
@@ -108,7 +108,7 @@ public class AttributesPanel : Panel
         else 
         {
             
-            if (TempAp == Global.PlayerAttributes.Ap)
+            if (TempAp == Global.PlayerAttributes.AbilityPoints)
             {
                 AStr.MinusButton.Disabled = true;
                 AHp.MinusButton.Disabled = true;
@@ -117,9 +117,9 @@ public class AttributesPanel : Panel
             else
             {
                 //if all points where spent, only let minus buttons of attributes enabled, that where used for spending points
-                AStr.MinusButton.Disabled = AStr.AValue != Global.PlayerAttributes.Str ? false : true;
-                AHp.MinusButton.Disabled = AHp.AValue != Global.PlayerAttributes.Hp ? false :true;
-                AAg.MinusButton.Disabled = AAg.AValue != Global.PlayerAttributes.Ag ? false : true;
+                AStr.MinusButton.Disabled = AStr.AValue != Global.PlayerAttributes.Strength ? false : true;
+                AHp.MinusButton.Disabled = AHp.AValue != Global.PlayerAttributes.MaxHp ? false :true;
+                AAg.MinusButton.Disabled = AAg.AValue != Global.PlayerAttributes.Agility ? false : true;
             }
             
             AStr.PlusButton.Disabled = false;

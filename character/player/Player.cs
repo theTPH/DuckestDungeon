@@ -7,15 +7,16 @@ public class Player : KinematicBody2D
     float Gravity;
     Vector2 Velocity;
     public FollowPlayerCamera Camera;
+    private AnimatedSprite mySprite;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         Camera = GetNode<FollowPlayerCamera>("FollowPlayerCamera");
+        mySprite = GetNode<AnimatedSprite>("Player");
         Speed = new Vector2(300, 1000);
         Gravity = 3000f;
         Velocity = Vector2.Zero;            
-        GD.Print(Camera.GetType());
     }
 
     public override void _Process(float delta)
@@ -28,11 +29,16 @@ public class Player : KinematicBody2D
 
     public Vector2 GetDirection()
     {
-            return new Vector2(
-            Input.GetActionStrength("move_right") - 
-            Input.GetActionStrength("move_left"),
-            1
-        );
+            float vectorResult = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left"); 
+            if (vectorResult < 0)
+            {
+                mySprite.FlipH = true;
+            }
+            else if (vectorResult > 0)
+            {
+                mySprite.FlipH = false;
+            }       
+            return new Vector2(vectorResult, 1);
     }
 
     public float GetPositionX()

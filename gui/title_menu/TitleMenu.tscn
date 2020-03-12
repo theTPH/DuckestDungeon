@@ -102,7 +102,7 @@ margin_right = 400.0
 margin_bottom = 298.0
 size_flags_vertical = 3
 toggle_mode = true
-text = "Optionen"
+text = "Twitch Mode"
 
 [node name="ExitButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
 margin_top = 318.0

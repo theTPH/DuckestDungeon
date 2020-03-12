@@ -78,7 +78,7 @@ public class Global : Node
 
         // load possible save data
         LoadGame();
-        Log.log.Info(PlayerAttributes.Name + " " + PlayerAttributes.Level + " " + PlayerAttributes.Xp);
+        Log.log.Info(PlayerAttributes.Name + " " + PlayerAttributes.Level + " " + PlayerAttributes.Experience);
 
         // connect signals
         Connect("XpObtained", Gui, "OnXpObtained");
@@ -223,11 +223,6 @@ public class Global : Node
         EmitSignal(nameof(XpObtained), xp);
     }
 
-    // public void OnVoteEnded(string result)
-    // {
-    //     EmitSignal(nameof(VoteEnded), result);
-    // }
-
     public void OnSecExited(bool exitedRight)
     {
         if (!SwitchRoomMode)
@@ -273,7 +268,7 @@ public class Global : Node
     // called when viewer buys xp with coins
     public void OnXpSent(MessageCoins coins)
     {
-        this.PlayerAttributes.Xp += coins.xp;
+        this.PlayerAttributes.Experience += coins.xp;
         // This could have been a great idea
         //GetNode<MenuBar>("").Refresh();
     }

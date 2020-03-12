@@ -30,7 +30,7 @@ public class SecChange : Area2D
         EmitSignal(nameof(SecChanged), exitedRight);
 
         // trigger twitch vote if trigger set
-        if (exitedRight && myVoteTriggered)
+        if (exitedRight && myVoteTriggered && Global.TwitchMode)
         {
             // start a vote
             startVote();

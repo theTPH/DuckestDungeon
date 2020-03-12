@@ -24,7 +24,7 @@ public class MenuBar : Control
 
     public void Refresh()
     {
-        ExpContainer.SetExpContainerValues(Global.PlayerAttributes.Level, Global.PlayerAttributes.Xp, Global.PlayerAttributes.XpToLevelUp);
+        ExpContainer.SetExpContainerValues(Global.PlayerAttributes.Level, Global.PlayerAttributes.Experience, Global.PlayerAttributes.ExperienceRequired);
     }
 
     public void OnBackToTitleScreenPressed()
@@ -46,7 +46,7 @@ public class MenuBar : Control
     public void OnDungeonCleared()
     {
         // if dungeon successfully cleared -> save new xp and level ups
-        Global.PlayerAttributes.Xp = (int)ExpContainer.ExpBar.Value;
+        Global.PlayerAttributes.Experience = (int)ExpContainer.ExpBar.Value;
         Global.PlayerAttributes.Level = ExpContainer.GetLevel();
         Global.PlayerAttributes.Save();
 

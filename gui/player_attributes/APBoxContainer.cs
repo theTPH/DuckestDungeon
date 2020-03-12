@@ -27,7 +27,7 @@ public class APBoxContainer : VBoxContainer
         APEditMode = false;
 
         // enable change attribute button, if ap > 0
-        if (Global.PlayerAttributes.Ap > 0)
+        if (Global.PlayerAttributes.AbilityPoints > 0)
         {
             SetAPButton.Disabled = false;
         }
@@ -78,7 +78,7 @@ public class APBoxContainer : VBoxContainer
             CancelButton.Visible = false;
 
             //disable AP edit, if no AP left
-            if (Global.PlayerAttributes.Ap <= 0)
+            if (Global.PlayerAttributes.AbilityPoints <= 0)
             {
                 SetAPButton.Disabled = true;
             }

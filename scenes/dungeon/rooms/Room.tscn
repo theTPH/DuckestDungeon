@@ -42,7 +42,7 @@ position = Vector2( 1901.61, 0 )
 polygon = PoolVector2Array( -24.9343, -320.367, -24.3356, 401.11, 43.4441, 400.823, 44.3413, -319.42 )
 
 [node name="EventSpot" parent="." instance=ExtResource( 3 )]
-position = Vector2( 1400, 680 )
+position = Vector2( 1400, 648 )
 
 [node name="DungeonClearedButton" type="Button" parent="."]
 visible = false

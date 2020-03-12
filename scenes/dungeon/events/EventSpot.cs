@@ -49,7 +49,7 @@ public class EventSpot : Area2D
         {
             // combat
             case 1:
-                myImagePath = "res://scenes/dungeon/events/combat.png";
+                myImagePath = "res://character/enemy/ape_endbossaseprite1.png";
                 myType = EventType.Combat;
                 break;
             // loot chest
