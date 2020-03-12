@@ -16,6 +16,7 @@ public class MenuBar : Control
         myMenuButton = GetNode<MenuButton>("MarginContainer/TextureRect/MarginContainer/GridContainer/MenuButton");
         Refresh();
 
+        // add menu option if in dungeon
         if (GetParent() is DungeonMenu)
         {
             myMenuButton.GetPopup().AddItem("Aus Dungeon fliehen");

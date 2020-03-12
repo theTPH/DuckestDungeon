@@ -7,7 +7,7 @@ public class WebSocketImpl : WebSocket
 {
 	private static WebSocketImpl instance = null;
 	private SortedDictionary<int, Action<MessageVote>> voteMap = new SortedDictionary<int, Action<MessageVote>>();
-	public static WebSocketImpl getInstance()
+	public static WebSocketImpl GetInstance()
 	{
 		if (instance == null)
 			instance = new WebSocketImpl();
@@ -28,7 +28,7 @@ public class WebSocketImpl : WebSocket
 				case "message_vote":
 					MessageVote messageVote = JsonConvert.DeserializeObject<MessageVote>(msg[1]);
 
-					int hash = (messageVote.option1 + messageVote.option2).GetHashCode();
+					int hash = (messageVote.Option1 + messageVote.Option2).GetHashCode();
 					if (voteMap.ContainsKey(hash))
 					{
 						voteMap[hash].Invoke(messageVote);
@@ -47,10 +47,10 @@ public class WebSocketImpl : WebSocket
 
 		this.Connect ();
 
-		// Beispiel send
+		// send example
 		MessageVote message = new MessageVote();
-		message.option1 = "erste option";
-		message.option2 = "zweite option";
+		message.Option1 = "erste option";
+		message.Option2 = "zweite option";
 		this.send(message);
 
 	}
@@ -68,9 +68,9 @@ public class WebSocketImpl : WebSocket
 		this.Send(json);
 	}
 
-	public void send(MessageVote vote, Action<MessageVote> callback)
+	public void Send(MessageVote vote, Action<MessageVote> callback)
 	{
-		int hash = (vote.option1 + vote.option2).GetHashCode();
+		int hash = (vote.Option1 + vote.Option2).GetHashCode();
 		this.voteMap[hash] = callback;
 		this.send(vote);
 	}

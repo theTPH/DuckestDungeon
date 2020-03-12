@@ -14,8 +14,6 @@ public class MenuButton : Godot.MenuButton
 
     public override void _Ready()
     {
-        // Node parentNode = GetNode("/root/");
-        
         myPopUpMenu = GetPopup();
         myPopUpMenu.Connect("id_pressed", this, nameof(OnMenuItemPressed));
     }

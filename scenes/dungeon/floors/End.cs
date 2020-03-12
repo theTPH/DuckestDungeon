@@ -10,6 +10,8 @@ public class End : Area2D
     public override void _Ready()
     {
         Global = GetNode<Global>("/root/Global");
+
+        // connect signals
         Connect("EndUsed", Global, "OnEndEntered");
     }
 
@@ -17,8 +19,7 @@ public class End : Area2D
     {
         if (Input.IsActionPressed("move_up") && GetOverlappingBodies().Count > 1)
         {
-            // change to room
-            GD.Print("Player is on end...");
+            // change to room and set new current room id
             Global.SetCurrentRoomId(Global.GetNextRoomId());
             EmitSignal(nameof(EndUsed));
         }

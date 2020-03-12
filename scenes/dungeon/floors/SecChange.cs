@@ -29,7 +29,7 @@ public class SecChange : Area2D
         bool exitedRight = body.Position.x > this.Position.x ? true : false;
         EmitSignal(nameof(SecChanged), exitedRight);
 
-        // trigger twitch vote if trigger set
+        // trigger twitch vote if trigger set and twitch mode active
         if (exitedRight && myVoteTriggered && Global.TwitchMode)
         {
             // start a vote
@@ -50,16 +50,16 @@ public class SecChange : Area2D
 
         // example vote
         MessageVote vote = new MessageVote();
-        vote.option1 = "\nOption1 - Springen";
-        vote.option2 = "\nOption2 - Entfernen";
+        vote.Option1 = "\nOption1 - Springen";
+        vote.Option2 = "\nOption2 - Entfernen";
 
-        WebSocketImpl.getInstance().send(vote, VoteCallback);
-        EmitSignal(nameof(VoteStarted), vote.option1, vote.option2);
+        WebSocketImpl.GetInstance().Send(vote, VoteCallback);
+        EmitSignal(nameof(VoteStarted), vote.Option1, vote.Option2);
     }
 
     public void VoteCallback(MessageVote vote)
     {
-        string result = $"\nDas Wahlergebnis war: {(vote.option1Chosen ? vote.option1 : vote.option2)}";
+        string result = $"\nDas Wahlergebnis war: {(vote.Option1Chosen ? vote.Option1 : vote.Option2)}";
         EmitSignal(nameof(VoteEnded), result);
     }
 }

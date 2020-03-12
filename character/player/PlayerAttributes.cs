@@ -34,7 +34,7 @@ public class PlayerAttributes
 
     public Godot.Collections.Dictionary<string, object> Save()
     {
-        GD.Print(AbilityPoints, Strength, MaxHp, Agility);
+        // return player date dicitonary for further processing (e.g. json save file)
         return new Godot.Collections.Dictionary<string, object>
         {
             {"name", Name},
@@ -50,6 +50,7 @@ public class PlayerAttributes
 
     public void Load(Godot.Collections.Dictionary playerData)
     {
+        // parse playerdata from dictionary to attribute fields
         Name = (string)playerData["name"];
         Level = Convert.ToInt32(playerData["level"]);
         Experience = Convert.ToInt32(playerData["xp"]);

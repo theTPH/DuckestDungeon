@@ -17,6 +17,7 @@ public class Room_Area : Control
 
     public void OnRoomAreaInputEvent(Node viewport, InputEvent @event, int shapeIdX)
     {
+        // forward room area position and id of clicked room
         if (@event is InputEventMouseButton && Input.IsMouseButtonPressed((int)ButtonList.Left))
         {
             EmitSignal(nameof(AreaClicked), RectPosition, Id);

@@ -12,11 +12,6 @@ public class GUI : Control
     [Signal]
     public delegate void VoteEnded(string result);
     
-    public override void _Ready()
-    {
-
-    }
-
     public void OnXpObtained(int xp)
     {
         if (GetChild(0) is DungeonMenu)

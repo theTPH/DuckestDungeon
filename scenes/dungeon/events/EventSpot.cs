@@ -35,7 +35,7 @@ public class EventSpot : Area2D
             // pickup loot
             if (myType == EventType.Loot)
             {
-                GD.Print("XP obtained!");
+                // forward obtained xp an self delete
                 EmitSignal(nameof(XpObtained), 20);
                 QueueFree();
             }
@@ -66,6 +66,7 @@ public class EventSpot : Area2D
                 break;
         }
 
+        // set event sprite texture based on event type
         mySprite.Texture = ResourceLoader.Load<Texture>(myImagePath);
         Position = new Vector2(positionX, positionY);
     }

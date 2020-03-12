@@ -14,23 +14,16 @@ public class test : Node2D
         Random rnd = new Random();
 
         MessageVote vote = new MessageVote();
-        vote.option1 = "Option1 - " + rnd.Next(0, 10);
-        vote.option2 = "Option2 - " + rnd.Next(0, 10);
+        vote.Option1 = "Option1 - " + rnd.Next(0, 10);
+        vote.Option2 = "Option2 - " + rnd.Next(0, 10);
 
-        WebSocketImpl.getInstance().send(vote, VoteCallback);
-
-        /*
-        // auch als Lambda möglich:
-        WebSocketImpl.getInstance().send(vote, (v) => {
-            Log.log.Debug("Das Ergebnis war " + (vote.option1Chosen ? vote.option1 : vote.option2));
-        });
-        */
+        WebSocketImpl.GetInstance().Send(vote, VoteCallback);
     }
 
     public void VoteCallback(MessageVote vote)
     {
         Label Label = GetNode<Label>("Label");
-        Label.Text = "Das Wahlergebnis war: " + (vote.option1Chosen ? vote.option1 : vote.option2);
+        Label.Text = "Das Wahlergebnis war: " + (vote.Option1Chosen ? vote.Option1 : vote.Option2);
     }
 
 }

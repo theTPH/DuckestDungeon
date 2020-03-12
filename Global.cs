@@ -100,6 +100,7 @@ public class Global : Node
         PackedScene newGuiScene = null;
         PackedScene newWorldScene = null;
 
+        // check for gui and world scene switch seperately
         if (!String.IsNullOrEmpty(guiScenePath))
         {
             CurrentGuiScene.Free();
@@ -176,7 +177,6 @@ public class Global : Node
         Log.log.Debug(playerData);
         saveGame.Close();
 
-        // TODO -> check if error
         PlayerAttributes.Load(playerData);
         SaveGameLoaded = true;
     }
@@ -268,9 +268,7 @@ public class Global : Node
     // called when viewer buys xp with coins
     public void OnXpSent(MessageCoins coins)
     {
-        this.PlayerAttributes.Experience += coins.xp;
-        // This could have been a great idea
-        //GetNode<MenuBar>("").Refresh();
+        this.PlayerAttributes.Experience += coins.Xp;
     }
 
     public Map GetMapNode()

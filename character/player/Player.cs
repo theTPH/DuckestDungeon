@@ -9,7 +9,7 @@ public class Player : KinematicBody2D
     public FollowPlayerCamera Camera;
     private AnimatedSprite mySprite;
 
-    // Called when the node enters the scene tree for the first time.
+   
     public override void _Ready()
     {
         Camera = GetNode<FollowPlayerCamera>("FollowPlayerCamera");
@@ -21,6 +21,7 @@ public class Player : KinematicBody2D
 
     public override void _Process(float delta)
     {
+        // check for input permanently and update velocity
         Vector2 direction = GetDirection();
         Velocity = Speed * direction;
         Velocity.y += Gravity * delta;
@@ -29,6 +30,7 @@ public class Player : KinematicBody2D
 
     public Vector2 GetDirection()
     {
+            // flip player sprite based on vector result from input
             float vectorResult = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left"); 
             if (vectorResult < 0)
             {
@@ -41,6 +43,7 @@ public class Player : KinematicBody2D
             return new Vector2(vectorResult, 1);
     }
 
+    // get x coordinate if player body
     public float GetPositionX()
     {
         return Position.x;

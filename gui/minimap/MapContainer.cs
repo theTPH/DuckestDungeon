@@ -15,15 +15,18 @@ public class MapContainer : ViewportContainer
 
     public void OnMapContainerGuiInput(InputEvent @event)
     {
+        // forward unspecific input to MapViewport
         if (@event is InputEventMouseMotion || @event is InputEventMouseButton)
         {
             MapViewPort.UnhandledInput(@event);
         }
         
+        // set minimap camera zoom to mouse wheel input
         if (@event is InputEventMouseButton emb)
         {
             if (emb.IsPressed())
             {
+                // zoom in
                 if (emb.ButtonIndex == (int)ButtonList.WheelUp)
                 {
                     if (MapCam.Zoom.x > 1.3f)
@@ -35,6 +38,7 @@ public class MapContainer : ViewportContainer
                         MapCam.Zoom = zoom;
                     } 
                 }
+                // zoom out
                 if (emb.ButtonIndex == (int)ButtonList.WheelDown)
                 {
                     if (MapCam.Zoom.x < 3.4f)

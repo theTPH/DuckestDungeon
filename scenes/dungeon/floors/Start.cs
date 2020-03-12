@@ -18,7 +18,6 @@ public class Start : Area2D
         if (Input.IsActionPressed("move_up") && GetOverlappingBodies().Count > 1)
         {
             // change to room
-            GD.Print("Player is on start...");
             EmitSignal(nameof(StartUsed));
         }
     }

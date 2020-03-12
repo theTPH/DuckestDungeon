@@ -8,14 +8,13 @@ public class ProgressBar : TextureProgress
 
     public override void _Ready()
     {
-        //Set initial values
+        //Set initial values of progression bar
         Label = GetNode<Label>("Label");
         MinValue = 0;
         MaxValue = 100;
         Value = 0;
         Label.Text = $"{MinValue}/{MaxValue} {ValueName}";
     }
-
 
     public void SetProgressionBar(int currentValue, int maxValue)
     {

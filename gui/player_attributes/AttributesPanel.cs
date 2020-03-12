@@ -21,6 +21,7 @@ public class AttributesPanel : Panel
         AAg = GetNode<AGAttributeContainer>("HBoxContainer/AGAttributeContainer");
         APBox = GetNode<APBoxContainer>("HBoxContainer/CenterContainer/APBoxContainer");
 
+        // load data id save file exists
         if (Global.SaveGameLoaded)
         {
             LoadAttributeData();

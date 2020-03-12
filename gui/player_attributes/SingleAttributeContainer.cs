@@ -29,6 +29,7 @@ public class SingleAttributeContainer : VBoxContainer
         PlusButton = GetNode<Button>("PlusButton");
         MinusButton = GetNode<Button>("MinusButton");
     
+        // if no save game exists -> set to default value
         if (!Global.SaveGameLoaded)
         {
             ANameLabel.Text = AName;
