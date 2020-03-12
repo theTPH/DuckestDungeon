@@ -10,8 +10,8 @@ extents = Vector2( 1000, 25 )
 [node name="Room" type="Node2D"]
 script = ExtResource( 2 )
 __meta__ = {
-"_edit_horizontal_guides_": [ 705.323 ],
-"_edit_vertical_guides_": [ 1094.15 ]
+"_edit_horizontal_guides_": [ 380.24, 380.24 ],
+"_edit_vertical_guides_": [ 1094.14, 810.608, 581.148 ]
 }
 
 [node name="DungeonPanel" parent="." instance=ExtResource( 3 )]

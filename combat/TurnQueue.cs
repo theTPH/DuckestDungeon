@@ -3,20 +3,19 @@ using System;
 
 public class TurnQueue : Node2D
 {
-    public Player player;
-    public Enemy enemy;
+    private Player player;
+    private Enemy enemy;
 
-    public int cooldownSpecial = 0;
-    public bool playerKill = false;
-    // public bool enemyKill = false;
+    private int cooldownSpecial = 0;
+    public bool PlayerKill = false;
 
     // Called when the node enters the scene tree for the first time.
-    
     public override void _Ready()
     {
 
     }
 
+    // get player and enemy nodes from room scene
     public void setChars(Player player, Enemy enemy)
     {
         this.player = player;
@@ -29,26 +28,27 @@ public class TurnQueue : Node2D
         return random.Next(min, max);
     }
 
+    // method to start combat (beta)
     public bool combat()
     {
         if (player.getMaxHp() <= 0)
         {
             // player lost -> back to main menu
-            return playerKill = true;
+            return PlayerKill = true;
         }
         else if (enemy.getMaxHp() <= 0)
         {
            // player won -> go on playing
-           return playerKill = false;
+           return PlayerKill = false;
         }
         else
         {
             if (player.getAgility() > enemy.getAgility())
             {
                 // player goes first
-                // check if attack or special
-
+                //player.Position = new Vector2(800, 380);
                 playerAttack();
+                //player.Position = new Vector2(580, 380);
                 enemyAttack();
 
                 if (cooldownSpecial >= 1)
@@ -62,7 +62,6 @@ public class TurnQueue : Node2D
             {
                 // enemy goes first
                 enemyAttack();
-                // check if attack or special
                 playerAttack();
 
                 if (cooldownSpecial >= 1)
@@ -78,6 +77,7 @@ public class TurnQueue : Node2D
         return false;
     }
 
+    // methods to declare attacks from both sides
     public void playerAttack()
     {
         if (player.getMaxHp() > 0)
@@ -88,6 +88,8 @@ public class TurnQueue : Node2D
             int damage = strength * modifier;
             int enemyHp = enemy.getMaxHp() - damage;
             enemy.setMaxHp(enemyHp);
+
+            System.Threading.Thread.Sleep(1000);
 
             GD.Print(player.getMaxHp());
             GD.Print(enemy.getMaxHp());
@@ -117,6 +119,8 @@ public class TurnQueue : Node2D
             int damage = strength * modifier;
             int playerHp = player.getMaxHp() - damage;
             player.setMaxHp(playerHp);
+
+            System.Threading.Thread.Sleep(1000);
 
             GD.Print(player.getMaxHp());
             GD.Print(enemy.getMaxHp());

@@ -12,6 +12,7 @@ public class Player : Character
     public double ExperienceRequired = 100;
 
 
+    // constructor with base-constructor from Character.cs
     public Player(string name, int lvl, double xp, double xpTotal, double xpReq) : base(50, 5, 5)
     {
         GD.Print("flag_player");
@@ -67,6 +68,7 @@ public class Player : Character
         return random.Next(min, max);
     }
 
+    // experience + leveling system
     public int getRequiredExperience(int level)
     {
         int experienceRequired = (int)Round(Pow(level, 1.8) + level * 4); 
@@ -111,6 +113,7 @@ public class Player : Character
         }
     }
 
+    // save all updated attributes from "player"
     public Godot.Collections.Dictionary<string, object> Save()
     {
         GD.Print(AbilityPoints, Strength, MaxHp, Agility);
