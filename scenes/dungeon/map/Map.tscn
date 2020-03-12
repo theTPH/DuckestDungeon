@@ -170,42 +170,49 @@ margin_left = 224.0
 margin_top = 160.0
 margin_right = 224.0
 margin_bottom = 160.0
+Id = 1
 
 [node name="Room_Area_02" parent="RoomAreas" instance=ExtResource( 4 )]
 margin_left = 672.0
 margin_top = 160.0
 margin_right = 672.0
 margin_bottom = 160.0
+Id = 2
 
 [node name="Room_Area_03" parent="RoomAreas" instance=ExtResource( 4 )]
 margin_left = 672.0
 margin_top = 608.0
 margin_right = 672.0
 margin_bottom = 608.0
+Id = 3
 
 [node name="Room_Area_04" parent="RoomAreas" instance=ExtResource( 4 )]
 margin_left = 1120.0
 margin_top = 608.0
 margin_right = 1120.0
 margin_bottom = 608.0
+Id = 4
 
 [node name="Room_Area_05" parent="RoomAreas" instance=ExtResource( 4 )]
 margin_left = 1120.0
 margin_top = 160.0
 margin_right = 1120.0
 margin_bottom = 160.0
+Id = 5
 
 [node name="Room_Area_06" parent="RoomAreas" instance=ExtResource( 4 )]
 margin_left = 1568.0
 margin_top = 160.0
 margin_right = 1568.0
 margin_bottom = 160.0
+Id = 6
 
 [node name="Room_Area_07" parent="RoomAreas" instance=ExtResource( 4 )]
 margin_left = 1568.0
 margin_top = 608.0
 margin_right = 1568.0
 margin_bottom = 608.0
+Id = 7
 [connection signal="AreaClicked" from="RoomAreas/Room_Area_01" to="." method="OnAreaClicked"]
 [connection signal="AreaClicked" from="RoomAreas/Room_Area_02" to="." method="OnAreaClicked"]
 [connection signal="AreaClicked" from="RoomAreas/Room_Area_03" to="." method="OnAreaClicked"]

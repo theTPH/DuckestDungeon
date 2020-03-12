@@ -70,6 +70,7 @@
     <Compile Include="character\player\PlayerAttributes.cs" />
     <Compile Include="gui\bars\exp_bar\ExpBar.cs" />
     <Compile Include="gui\bars\ProgressBar.cs" />
+    <Compile Include="gui\dungeon_menu\DungeonMenu.cs" />
     <Compile Include="gui\GUI.cs" />
     <Compile Include="gui\menu_bar\ExpContainer.cs" />
     <Compile Include="gui\menu_bar\MenuBar.cs" />
@@ -91,11 +92,13 @@
     <Compile Include="logging\GodotAppender.cs" />
     <Compile Include="logging\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="scenes\dungeon\events\EventSpot.cs" />
     <Compile Include="scenes\dungeon\floors\End.cs" />
     <Compile Include="scenes\dungeon\floors\Floor.cs" />
     <Compile Include="scenes\dungeon\floors\SecChange.cs" />
     <Compile Include="scenes\dungeon\floors\Start.cs" />
     <Compile Include="scenes\dungeon\map\Map.cs" />
+    <Compile Include="scenes\dungeon\rooms\Room.cs" />
     <Compile Include="scenes\dungeon\test.cs" />
     <Compile Include="scenes\tavern\Tavern.cs" />
   </ItemGroup>

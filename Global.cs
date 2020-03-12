@@ -15,16 +15,26 @@ public class Global : Node
     public Node Gui;
     public Node CurrentGuiScene;
     public const string GUI_START_PATH = "res://gui/title_menu/TitleMenu.tscn";
+    public const string GUI_TAVERN_PATH = "res://gui/menu_bar/MenuBar.tscn";
 
     public Node World;
     public Node CurrentWorldScene;
     public const string WORLD_START_PATH = "res://scenes/startup/TitleScene.tscn";
     public const string WORLD_ROOM_PATH = "res://scenes/dungeon/rooms/Room.tscn";
+    public const string WORLD_TAVERN_PATH = "res://scenes/tavern/Tavern.tscn";
 
     public PlayerAttributes PlayerAttributes;
     public bool SaveGameLoaded;
     public bool TwitchMode;
     public bool SwitchRoomMode;
+
+    private int myCurrentRoomId;
+    private int myNextRoomId;
+
+    [Signal]
+    public delegate void XpObtained(int xp);
+    [Signal]
+    public delegate void DungeonCleared();
 
     // database
     public static ISession connection;
@@ -32,9 +42,13 @@ public class Global : Node
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        // set flags
         SaveGameLoaded = false;
         TwitchMode = false;
         SwitchRoomMode = false;
+
+        myCurrentRoomId = 0;
+        myNextRoomId = 0;
 
         // initialize database
         InitHibernate();
@@ -61,6 +75,10 @@ public class Global : Node
         // load possible save data
         LoadGame();
         Log.log.Info(PlayerAttributes.Name + " " + PlayerAttributes.Level + " " + PlayerAttributes.Xp);
+
+        // connect signals
+        Connect("XpObtained", Gui, "OnXpObtained");
+        Connect("DungeonCleared", Gui, "OnDungeonCleared");
     }
 
     #region Scene Handling
@@ -74,9 +92,6 @@ public class Global : Node
 
     public void DeferredChangeScene(string guiScenePath, string worldScenePath)
     {
-        // CurrentGuiScene.Free();
-        // CurrentWorldScene.Free();
-
         PackedScene newGuiScene = null;
         PackedScene newWorldScene = null;
 
@@ -106,6 +121,26 @@ public class Global : Node
             GD.Print("World changed");
         }
 
+    }
+
+    public int GetCurrentRoomId()
+    {
+        return myCurrentRoomId;
+    }
+    
+    public void SetCurrentRoomId(int currentId)
+    {
+        myCurrentRoomId = currentId;
+    }
+
+    public int GetNextRoomId()
+    {
+        return myNextRoomId;
+    }
+
+    public void SetNextRoomId(int nextId)
+    {
+        myNextRoomId = nextId;
     }
 
     #endregion
@@ -178,6 +213,11 @@ public class Global : Node
 
     #region Signals
 
+    public void OnXpObtainedInDungeon(int xp)
+    {
+        EmitSignal(nameof(XpObtained), xp);
+    }
+
     public void OnSecExited(bool exitedRight)
     {
         if (!SwitchRoomMode)
@@ -215,6 +255,11 @@ public class Global : Node
         Map map = GetMapNode();
         SwitchRoomMode = true;
         map.ChangePlayerPosition(true);
+    }
+
+    public void OnDungeonCleared()
+    {
+        EmitSignal(nameof(DungeonCleared));
     }
 
     public Map GetMapNode()

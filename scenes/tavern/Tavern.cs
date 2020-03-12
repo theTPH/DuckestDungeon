@@ -15,6 +15,7 @@ public class Tavern : Node2D
     public void OnStartDungeonButtonPressed()
     {
         Global.SwitchRoomMode = true;
+        Global.SetCurrentRoomId(1);
         Global.ChangeScene(GUI_DUNGEON__SCENE, WORLD_DUNGEON_SCENE);
     }
 }

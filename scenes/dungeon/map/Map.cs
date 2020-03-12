@@ -33,10 +33,13 @@ public class Map : Node2D
         Global.SwitchRoomMode = true;
     }
 
-    public void OnAreaClicked(Vector2 position)
+    public void OnAreaClicked(Vector2 position, int nextId)
     {
         if (Global.SwitchRoomMode)
         {
+            // set next room id
+            Global.SetNextRoomId(nextId);
+            
             // move playerdot right 
             if (position.x > PlayerLocation.Position.x
             && position.y == PlayerLocation.Position.y

@@ -4,10 +4,11 @@ using System;
 public class Room_Area : Control
 {
     private bool myMouseOnArea = false;
-
     public const string ROOM_GROUP = "Rooms";
     [Signal]
-    public delegate void AreaClicked(Vector2 position);
+    public delegate void AreaClicked(Vector2 position, int nextId);
+    [Export]
+    public int Id;
 
     public override void _Ready()
     {
@@ -18,27 +19,7 @@ public class Room_Area : Control
     {
         if (@event is InputEventMouseButton && Input.IsMouseButtonPressed((int)ButtonList.Left))
         {
-            EmitSignal(nameof(AreaClicked), RectPosition);
-            GD.Print("AREA CLICKED!");
+            EmitSignal(nameof(AreaClicked), RectPosition, Id);
         }
     }
-
-    // public override void _UnhandledInput(InputEvent @event)
-    // {
-    //     GD.Print("Im here YOLO!");
-    // }
-
-    public void OnRoomAreaMouseEntered()
-    {
-        myMouseOnArea = true;
-        GD.Print("ON AREA");
-    }
-
-    public void OnRoomAreaMouseExited()
-    {
-        myMouseOnArea = false;
-        GD.Print("NOT ON AREA");
-    }
-
-
 }

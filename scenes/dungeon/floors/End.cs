@@ -19,6 +19,7 @@ public class End : Area2D
         {
             // change to room
             GD.Print("Player is on end...");
+            Global.SetCurrentRoomId(Global.GetNextRoomId());
             EmitSignal(nameof(EndUsed));
         }
     }

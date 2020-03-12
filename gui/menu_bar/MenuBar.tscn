@@ -63,5 +63,6 @@ items = [ "Zurück zum Startmenü", null, 0, false, false, 0, 0, null, "", false
 script = ExtResource( 5 )
 
 [node name="ExpContainer" parent="MarginContainer/TextureRect/MarginContainer/GridContainer" instance=ExtResource( 2 )]
+[connection signal="BackToTavernPressed" from="MarginContainer/TextureRect/MarginContainer/GridContainer/MenuButton" to="." method="OnBackToTavernPressed"]
 [connection signal="BackToTitleScreenPressed" from="MarginContainer/TextureRect/MarginContainer/GridContainer/MenuButton" to="." method="OnBackToTitleScreenPressed"]
 [connection signal="SaveAndQuitPressed" from="MarginContainer/TextureRect/MarginContainer/GridContainer/MenuButton" to="." method="OnSaveAndQuitPressed"]

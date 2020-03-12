@@ -4,15 +4,15 @@ using System;
 public class ExpContainer : CenterContainer
 {
     public ExpBar ExpBar;
-    public Label LevelLabel;
+    private Label myLevelLabel;
+    private int myLevel;
 
     public override void _Ready()
     {
         ExpBar = GetNode<ExpBar>("HBoxContainer/ExpBar");
-        LevelLabel = GetNode<Label>("HBoxContainer/LevelLabel");
-
-        //set initial values
-        SetLevel(1);
+        myLevelLabel = GetNode<Label>("HBoxContainer/LevelLabel");
+        myLevel = 1;
+        myLevelLabel.Text = $"LV.{myLevel}";
     }
 
     public void SetExpContainerValues(int level, int currentValue, int maxValue)
@@ -23,8 +23,33 @@ public class ExpContainer : CenterContainer
 
     public void SetLevel(int level)
     {
-        LevelLabel.Text = $"LV.{level}";
+        myLevelLabel.Text = $"LV.{level}";
+        myLevel = level;
     }
 
+    public int GetLevel()
+    {
+        return myLevel;
+    }
+
+    public void OnXpObtained(int xp)
+    {
+        int currentValue = (int)ExpBar.Value;
+        int maxValue = (int)ExpBar.MaxValue;
+        
+        //check if level up
+        if (currentValue + xp >= maxValue)
+        {
+            SetLevel(myLevel + 1);
+            currentValue = currentValue + xp - maxValue;
+        }
+        else
+        {
+            currentValue += xp;
+        }
+
+        // set progression bar with new values
+        ExpBar.SetProgressionBar(currentValue, maxValue);
+    }
 
 }

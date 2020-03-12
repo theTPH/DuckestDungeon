@@ -18,5 +18,3 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
 [connection signal="input_event" from="Area2D" to="." method="OnRoomAreaInputEvent"]
-[connection signal="mouse_entered" from="Area2D" to="." method="OnRoomAreaMouseEntered"]
-[connection signal="mouse_exited" from="Area2D" to="." method="OnRoomAreaMouseExited"]
