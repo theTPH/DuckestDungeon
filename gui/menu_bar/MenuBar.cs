@@ -14,12 +14,17 @@ public class MenuBar : Control
         Global = GetNode<Global>("/root/Global");
         ExpContainer = GetNode<ExpContainer>("MarginContainer/TextureRect/MarginContainer/GridContainer/ExpContainer");
         myMenuButton = GetNode<MenuButton>("MarginContainer/TextureRect/MarginContainer/GridContainer/MenuButton");
-        ExpContainer.SetExpContainerValues(Global.PlayerAttributes.Level, Global.PlayerAttributes.Xp, Global.PlayerAttributes.XpToLevelUp);
+        Refresh();
 
         if (GetParent() is DungeonMenu)
         {
             myMenuButton.GetPopup().AddItem("Aus Dungeon fliehen");
         }
+    }
+
+    public void Refresh()
+    {
+        ExpContainer.SetExpContainerValues(Global.PlayerAttributes.Level, Global.PlayerAttributes.Xp, Global.PlayerAttributes.XpToLevelUp);
     }
 
     public void OnBackToTitleScreenPressed()

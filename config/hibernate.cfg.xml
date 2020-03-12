@@ -3,10 +3,10 @@
   <session-factory>
     <property name="dialect">NHibernate.Dialect.SQLiteDialect</property>
     <property name="connection.driver_class">NHibernate.Driver.SQLite20Driver</property>
-    <property name="connection.connection_string">Data Source=viewerscore.db;Version=3;createDatabaseIfNotExist=true</property>
+    <property name="connection.connection_string">Data Source=../TwitchBot/test.db;Version=3;createDatabaseIfNotExist=true</property>
     <property name="query.substitutions">true=1;false=0;</property>
 
     <!-- logging -->
-    <property name="show_sql">true</property>
+    <property name="show_sql">false</property>
   </session-factory>
 </hibernate-configuration>
