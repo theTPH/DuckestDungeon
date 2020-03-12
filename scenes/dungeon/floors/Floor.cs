@@ -10,12 +10,17 @@ public class Floor : Node2D
     private int myEventSpotPosition;
     private int myEventType;
     private Vector2 myEventSpawn;
+    private SecChange mySec1;
+    private SecChange mySec2;
 
 
     public override void _Ready()
     {
         myPlayer = GetNode<Player>("Player");
         myPlayer.Camera.SetLimitRigth(3800);
+        mySec1 = GetNode<SecChange>("SectionChangeAreas/SecChange01");
+        mySec2 = GetNode<SecChange>("SectionChangeAreas/SecChange02");
+
         EventSpot = GetNode<EventSpot>("EventSpots/EventSpot");
         
         // generate random event spot and random event
@@ -27,7 +32,7 @@ public class Floor : Node2D
         GD.Print(myEventSpotPosition);
         GD.Print(myEventType);
 
-        // randomize for combat, loot or obstacle event      
+        // randomize event spot for combat, loot or obstacle event      
         switch (myEventType)
         {
             case 1:
@@ -44,10 +49,18 @@ public class Floor : Node2D
             case 3:
                 if (myEventSpotPosition == 1)
                 {
+                    if (myEventType == 3)
+                    {
+                        mySec1.SetObstacleTrigger();
+                    }
                     eventPositionX = 1480;
                 }
                 else
                 {
+                    if (myEventType == 3)
+                    {
+                        mySec2.SetObstacleTrigger();
+                    }
                     eventPositionX = 2440;
                 }
                 break;

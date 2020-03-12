@@ -70,6 +70,7 @@
     <Compile Include="character\player\PlayerAttributes.cs" />
     <Compile Include="gui\bars\exp_bar\ExpBar.cs" />
     <Compile Include="gui\bars\ProgressBar.cs" />
+    <Compile Include="gui\dungeon_menu\Console.cs" />
     <Compile Include="gui\dungeon_menu\DungeonMenu.cs" />
     <Compile Include="gui\GUI.cs" />
     <Compile Include="gui\menu_bar\ExpContainer.cs" />

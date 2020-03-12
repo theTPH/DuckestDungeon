@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://gui/minimap/Minimap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://gui/menu_bar/MenuBar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://gui/dungeon_menu/DungeonMenu.cs" type="Script" id=3]
+[ext_resource path="res://gui/dungeon_menu/Console.cs" type="Script" id=4]
 
 [node name="DungeonMenu" type="Control"]
 margin_left = -0.591739
@@ -35,22 +36,22 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 1899.0
+margin_right = 1900.0
 margin_bottom = 260.0
 custom_constants/separation = 25
 
 [node name="PlaceholderCombatGui" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
-margin_right = 609.0
+margin_right = 610.0
 margin_bottom = 240.0
 size_flags_horizontal = 3
 
 [node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/PlaceholderCombatGui"]
-margin_right = 609.0
+margin_right = 610.0
 margin_bottom = 240.0
 
 [node name="TwitchGui" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 634.0
-margin_right = 1243.0
+margin_left = 635.0
+margin_right = 1245.0
 margin_bottom = 240.0
 size_flags_horizontal = 3
 custom_constants/margin_right = 5
@@ -61,7 +62,7 @@ custom_constants/margin_bottom = 5
 [node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/TwitchGui"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 604.0
+margin_right = 605.0
 margin_bottom = 235.0
 
 [node name="Console" type="RichTextLabel" parent="MarginContainer/HBoxContainer/TwitchGui/Panel"]
@@ -77,11 +78,12 @@ custom_constants/table_vseparation = 0
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 0
 text = "Testing..."
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Minimap" parent="MarginContainer/HBoxContainer" instance=ExtResource( 1 )]
-margin_left = 1268.0
-margin_right = 1879.0
+margin_left = 1270.0
+margin_right = 1880.0
 size_flags_horizontal = 3

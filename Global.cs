@@ -35,6 +35,8 @@ public class Global : Node
     public delegate void XpObtained(int xp);
     [Signal]
     public delegate void DungeonCleared();
+    [Signal]
+    public delegate void VoteEnded(string result);
 
     // database
     public static ISession connection;
@@ -81,6 +83,7 @@ public class Global : Node
         // connect signals
         Connect("XpObtained", Gui, "OnXpObtained");
         Connect("DungeonCleared", Gui, "OnDungeonCleared");
+        Connect("VoteEnded", Gui, "OnVoteEnded");
     }
 
     #region Scene Handling
@@ -220,12 +223,15 @@ public class Global : Node
         EmitSignal(nameof(XpObtained), xp);
     }
 
+    // public void OnVoteEnded(string result)
+    // {
+    //     EmitSignal(nameof(VoteEnded), result);
+    // }
+
     public void OnSecExited(bool exitedRight)
     {
         if (!SwitchRoomMode)
         {
-            GD.Print(exitedRight);
-
             try
             {
                 // get Map node

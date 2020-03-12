@@ -73,15 +73,12 @@ shape = SubResource( 2 )
 [node name="SectionChangeAreas" type="Node" parent="."]
 
 [node name="SecChange01" parent="SectionChangeAreas" instance=ExtResource( 5 )]
-Id = 1
 
 [node name="SecChange02" parent="SectionChangeAreas" instance=ExtResource( 5 )]
 position = Vector2( 1920, 414.924 )
-Id = 2
 
 [node name="SecChange03" parent="SectionChangeAreas" instance=ExtResource( 5 )]
 position = Vector2( 2880, 414.924 )
-Id = 3
 
 [node name="WarpZones" type="Node" parent="."]
 
